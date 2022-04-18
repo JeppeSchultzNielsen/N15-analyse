@@ -1,0 +1,697 @@
+# AUSAlib version: 17.1
+# Calibrator version: 2.0
+# Calibrator arguments: Calibrator --eloss -d Det2
+# Input files: 
+#	det2.root
+Current time is: 2022-04-13 17:00
+======================================================
+
+Starting calibration of Det2
+Source: 
+	{(3182.69, 1)}
+	{(5105.5, 0.119615), (5144.3, 0.171409), (5156.59, 0.708976)}
+	{(5762.64, 0.231), (5804.96, 0.769)}
+======================================================
+
+Calibrating Front
+======================================================
+
+--------------------------------
+Strip 1
+--------------------------------
+Deadlayer corrected source 
+	{(3158.97, 1)}
+	{(5087.46, 0.119615), (5126.34, 0.171409), (5138.66, 0.708976)}
+	{(5745.87, 0.231), (5788.27, 0.769)}
+Peaks:
+	Energy: 3158.97  Channel: 1063.06  Uncertaincy: 0.114496
+	Energy: 5087.46  Channel: 1629.34  Uncertaincy: 0.139538
+	Energy: 5126.34  Channel: 1640.75  Uncertaincy: 0.139538
+	Energy: 5138.66  Channel: 1644.36  Uncertaincy: 0.139538
+	Energy: 5745.87  Channel: 1821.83  Uncertaincy: 0.176256
+	Energy: 5788.27  Channel: 1834.27  Uncertaincy: 0.176256
+Results: 
+	Offset: -465.306 ± 2.80949
+	Slope:  3.40861 ± 0.00174104
+	Chi^2/ndf:  5.3919/4 = 1.34798
+Covariance matrix
+	7.89325	-0.00482624
+	-0.00482624	3.03122e-06
+--------------------------------
+Strip 2
+--------------------------------
+Deadlayer corrected source 
+	{(3159.86, 1)}
+	{(5088.14, 0.119615), (5127.01, 0.171409), (5139.33, 0.708976)}
+	{(5746.5, 0.231), (5788.89, 0.769)}
+Peaks:
+	Energy: 3159.86  Channel: 1049.18  Uncertaincy: 0.145219
+	Energy: 5088.14  Channel: 1636.72  Uncertaincy: 0.163186
+	Energy: 5127.01  Channel: 1648.56  Uncertaincy: 0.163186
+	Energy: 5139.33  Channel: 1652.31  Uncertaincy: 0.163186
+	Energy: 5746.5  Channel: 1837.05  Uncertaincy: 0.199438
+	Energy: 5788.89  Channel: 1849.97  Uncertaincy: 0.199438
+Results: 
+	Offset: -284.621 ± 2.80193
+	Slope:  3.28283 ± 0.00172674
+	Chi^2/ndf:  0.470241/4 = 0.11756
+Covariance matrix
+	7.85082	-0.00476994
+	-0.00476994	2.98163e-06
+--------------------------------
+Strip 3
+--------------------------------
+Deadlayer corrected source 
+	{(3160.65, 1)}
+	{(5088.74, 0.119615), (5127.61, 0.171409), (5139.92, 0.708976)}
+	{(5747.06, 0.231), (5789.45, 0.769)}
+Peaks:
+	Energy: 3160.65  Channel: 1075.86  Uncertaincy: 0.139141
+	Energy: 5088.74  Channel: 1660.83  Uncertaincy: 0.150656
+	Energy: 5127.61  Channel: 1672.62  Uncertaincy: 0.150656
+	Energy: 5139.92  Channel: 1676.36  Uncertaincy: 0.150656
+	Energy: 5747.06  Channel: 1860.14  Uncertaincy: 0.181102
+	Energy: 5789.45  Channel: 1873  Uncertaincy: 0.181102
+Results: 
+	Offset: -387.334 ± 2.82767
+	Slope:  3.29748 ± 0.00171444
+	Chi^2/ndf:  1.25024/4 = 0.31256
+Covariance matrix
+	7.99574	-0.00478304
+	-0.00478304	2.93932e-06
+--------------------------------
+Strip 4
+--------------------------------
+Deadlayer corrected source 
+	{(3161.33, 1)}
+	{(5089.25, 0.119615), (5128.13, 0.171409), (5140.44, 0.708976)}
+	{(5747.54, 0.231), (5789.93, 0.769)}
+Peaks:
+	Energy: 3161.33  Channel: 1060.47  Uncertaincy: 0.124625
+	Energy: 5089.25  Channel: 1651.53  Uncertaincy: 0.134717
+	Energy: 5128.13  Channel: 1663.44  Uncertaincy: 0.134717
+	Energy: 5140.44  Channel: 1667.22  Uncertaincy: 0.134717
+	Energy: 5747.54  Channel: 1853.08  Uncertaincy: 0.193471
+	Energy: 5789.93  Channel: 1866.07  Uncertaincy: 0.193471
+Results: 
+	Offset: -298.887 ± 2.74531
+	Slope:  3.26269 ± 0.00167864
+	Chi^2/ndf:  0.474709/4 = 0.118677
+Covariance matrix
+	7.53675	-0.00454428
+	-0.00454428	2.81782e-06
+--------------------------------
+Strip 5
+--------------------------------
+Deadlayer corrected source 
+	{(3161.89, 1)}
+	{(5089.68, 0.119615), (5128.55, 0.171409), (5140.86, 0.708976)}
+	{(5747.93, 0.231), (5790.32, 0.769)}
+Peaks:
+	Energy: 3161.89  Channel: 1090.72  Uncertaincy: 0.173024
+	Energy: 5089.68  Channel: 1692.68  Uncertaincy: 0.164325
+	Energy: 5128.55  Channel: 1704.81  Uncertaincy: 0.164325
+	Energy: 5140.86  Channel: 1708.66  Uncertaincy: 0.164325
+	Energy: 5747.93  Channel: 1898.09  Uncertaincy: 0.191426
+	Energy: 5790.32  Channel: 1911.33  Uncertaincy: 0.191426
+Results: 
+	Offset: -331.721 ± 2.89533
+	Slope:  3.20294 ± 0.00171695
+	Chi^2/ndf:  0.106396/4 = 0.0265989
+Covariance matrix
+	8.38295	-0.00490581
+	-0.00490581	2.94793e-06
+--------------------------------
+Strip 6
+--------------------------------
+Deadlayer corrected source 
+	{(3162.33, 1)}
+	{(5090.01, 0.119615), (5128.88, 0.171409), (5141.19, 0.708976)}
+	{(5748.24, 0.231), (5790.63, 0.769)}
+Peaks:
+	Energy: 3162.33  Channel: 1068.12  Uncertaincy: 0.1236
+	Energy: 5090.01  Channel: 1656.68  Uncertaincy: 0.13536
+	Energy: 5128.88  Channel: 1668.54  Uncertaincy: 0.13536
+	Energy: 5141.19  Channel: 1672.3  Uncertaincy: 0.13536
+	Energy: 5748.24  Channel: 1857.67  Uncertaincy: 0.162191
+	Energy: 5790.63  Channel: 1870.62  Uncertaincy: 0.162191
+Results: 
+	Offset: -335.97 ± 2.74465
+	Slope:  3.2752 ± 0.00166673
+	Chi^2/ndf:  0.00725052/4 = 0.00181263
+Covariance matrix
+	7.5331	-0.00451254
+	-0.00451254	2.77799e-06
+--------------------------------
+Strip 7
+--------------------------------
+Deadlayer corrected source 
+	{(3162.62, 1)}
+	{(5090.23, 0.119615), (5129.1, 0.171409), (5141.41, 0.708976)}
+	{(5748.45, 0.231), (5790.83, 0.769)}
+Peaks:
+	Energy: 3162.62  Channel: 1074.06  Uncertaincy: 0.175491
+	Energy: 5090.23  Channel: 1670.18  Uncertaincy: 0.161729
+	Energy: 5129.1  Channel: 1682.2  Uncertaincy: 0.161729
+	Energy: 5141.41  Channel: 1686.01  Uncertaincy: 0.161729
+	Energy: 5748.45  Channel: 1873.35  Uncertaincy: 0.198695
+	Energy: 5790.83  Channel: 1886.45  Uncertaincy: 0.198695
+Results: 
+	Offset: -312.229 ± 2.91255
+	Slope:  3.23491 ± 0.0017514
+	Chi^2/ndf:  0.974287/4 = 0.243572
+Covariance matrix
+	8.48292	-0.00503417
+	-0.00503417	3.0674e-06
+--------------------------------
+Strip 8
+--------------------------------
+Deadlayer corrected source 
+	{(3162.77, 1)}
+	{(5090.35, 0.119615), (5129.21, 0.171409), (5141.53, 0.708976)}
+	{(5748.55, 0.231), (5790.94, 0.769)}
+Peaks:
+	Energy: 3162.77  Channel: 1069.77  Uncertaincy: 0.135041
+	Energy: 5090.35  Channel: 1670.96  Uncertaincy: 0.135449
+	Energy: 5129.21  Channel: 1683.08  Uncertaincy: 0.135449
+	Energy: 5141.53  Channel: 1686.92  Uncertaincy: 0.135449
+	Energy: 5748.55  Channel: 1876.28  Uncertaincy: 0.169211
+	Energy: 5790.94  Channel: 1889.5  Uncertaincy: 0.169211
+Results: 
+	Offset: -267.064 ± 2.73521
+	Slope:  3.20617 ± 0.0016456
+	Chi^2/ndf:  0.00590347/4 = 0.00147587
+Covariance matrix
+	7.48138	-0.00443939
+	-0.00443939	2.708e-06
+--------------------------------
+Strip 9
+--------------------------------
+Deadlayer corrected source 
+	{(3162.77, 1)}
+	{(5090.35, 0.119615), (5129.21, 0.171409), (5141.53, 0.708976)}
+	{(5748.55, 0.231), (5790.94, 0.769)}
+Peaks:
+	Energy: 3162.77  Channel: 1085.39  Uncertaincy: 0.151506
+	Energy: 5090.35  Channel: 1682.52  Uncertaincy: 0.1502
+	Energy: 5129.21  Channel: 1694.56  Uncertaincy: 0.1502
+	Energy: 5141.53  Channel: 1698.37  Uncertaincy: 0.1502
+	Energy: 5748.55  Channel: 1886.48  Uncertaincy: 0.184662
+	Energy: 5790.94  Channel: 1899.61  Uncertaincy: 0.184662
+Results: 
+	Offset: -340.73 ± 2.833
+	Slope:  3.22791 ± 0.00169312
+	Chi^2/ndf:  0.0242169/4 = 0.00605423
+Covariance matrix
+	8.02592	-0.00473277
+	-0.00473277	2.86665e-06
+--------------------------------
+Strip 10
+--------------------------------
+Deadlayer corrected source 
+	{(3162.62, 1)}
+	{(5090.23, 0.119615), (5129.1, 0.171409), (5141.41, 0.708976)}
+	{(5748.45, 0.231), (5790.83, 0.769)}
+Peaks:
+	Energy: 3162.62  Channel: 1070.62  Uncertaincy: 0.14992
+	Energy: 5090.23  Channel: 1665.93  Uncertaincy: 0.155555
+	Energy: 5129.1  Channel: 1677.93  Uncertaincy: 0.155555
+	Energy: 5141.41  Channel: 1681.73  Uncertaincy: 0.155555
+	Energy: 5748.45  Channel: 1868.99  Uncertaincy: 0.180426
+	Energy: 5790.83  Channel: 1882.08  Uncertaincy: 0.180426
+Results: 
+	Offset: -305.048 ± 2.80916
+	Slope:  3.23875 ± 0.0016952
+	Chi^2/ndf:  0.29883/4 = 0.0747075
+Covariance matrix
+	7.8914	-0.00469735
+	-0.00469735	2.87369e-06
+--------------------------------
+Strip 11
+--------------------------------
+Deadlayer corrected source 
+	{(3162.33, 1)}
+	{(5090.01, 0.119615), (5128.88, 0.171409), (5141.19, 0.708976)}
+	{(5748.24, 0.231), (5790.63, 0.769)}
+Peaks:
+	Energy: 3162.33  Channel: 1075.99  Uncertaincy: 0.155402
+	Energy: 5090.01  Channel: 1677.09  Uncertaincy: 0.152967
+	Energy: 5128.88  Channel: 1689.2  Uncertaincy: 0.152967
+	Energy: 5141.19  Channel: 1693.04  Uncertaincy: 0.152967
+	Energy: 5748.24  Channel: 1881.93  Uncertaincy: 0.185015
+	Energy: 5790.63  Channel: 1895.14  Uncertaincy: 0.185015
+Results: 
+	Offset: -290.157 ± 2.81419
+	Slope:  3.20832 ± 0.00168659
+	Chi^2/ndf:  1.09916/4 = 0.274789
+Covariance matrix
+	7.91964	-0.00468216
+	-0.00468216	2.8446e-06
+--------------------------------
+Strip 12
+--------------------------------
+Deadlayer corrected source 
+	{(3161.89, 1)}
+	{(5089.68, 0.119615), (5128.55, 0.171409), (5140.86, 0.708976)}
+	{(5747.93, 0.231), (5790.32, 0.769)}
+Peaks:
+	Energy: 3161.89  Channel: 1060.73  Uncertaincy: 0.112824
+	Energy: 5089.68  Channel: 1652.52  Uncertaincy: 0.128172
+	Energy: 5128.55  Channel: 1664.45  Uncertaincy: 0.128172
+	Energy: 5140.86  Channel: 1668.23  Uncertaincy: 0.128172
+	Energy: 5747.93  Channel: 1854.1  Uncertaincy: 0.161041
+	Energy: 5790.32  Channel: 1867.11  Uncertaincy: 0.161041
+Results: 
+	Offset: -295.659 ± 2.69518
+	Slope:  3.2592 ± 0.00164238
+	Chi^2/ndf:  1.76201/4 = 0.440503
+Covariance matrix
+	7.26398	-0.00436519
+	-0.00436519	2.69742e-06
+--------------------------------
+Strip 13
+--------------------------------
+Deadlayer corrected source 
+	{(3161.33, 1)}
+	{(5089.25, 0.119615), (5128.13, 0.171409), (5140.44, 0.708976)}
+	{(5747.54, 0.231), (5789.93, 0.769)}
+Peaks:
+	Energy: 3161.33  Channel: 1050.31  Uncertaincy: 0.113116
+	Energy: 5089.25  Channel: 1644.2  Uncertaincy: 0.130253
+	Energy: 5128.13  Channel: 1656.17  Uncertaincy: 0.130253
+	Energy: 5140.44  Channel: 1659.96  Uncertaincy: 0.130253
+	Energy: 5747.54  Channel: 1846.48  Uncertaincy: 0.170736
+	Energy: 5789.93  Channel: 1859.54  Uncertaincy: 0.170736
+Results: 
+	Offset: -250.374 ± 2.63183
+	Slope:  3.2479 ± 0.00161441
+	Chi^2/ndf:  1.76565/4 = 0.441412
+Covariance matrix
+	6.92654	-0.00418657
+	-0.00418657	2.60632e-06
+--------------------------------
+Strip 14
+--------------------------------
+Deadlayer corrected source 
+	{(3160.65, 1)}
+	{(5088.74, 0.119615), (5127.61, 0.171409), (5139.92, 0.708976)}
+	{(5747.06, 0.231), (5789.45, 0.769)}
+Peaks:
+	Energy: 3160.65  Channel: 1071.24  Uncertaincy: 0.0952725
+	Energy: 5088.74  Channel: 1665.45  Uncertaincy: 0.119958
+	Energy: 5127.61  Channel: 1677.42  Uncertaincy: 0.119958
+	Energy: 5139.92  Channel: 1681.22  Uncertaincy: 0.119958
+	Energy: 5747.06  Channel: 1867.6  Uncertaincy: 0.161947
+	Energy: 5789.45  Channel: 1880.66  Uncertaincy: 0.161947
+Results: 
+	Offset: -318.478 ± 2.65796
+	Slope:  3.2472 ± 0.00161014
+	Chi^2/ndf:  3.84861/4 = 0.962151
+Covariance matrix
+	7.06477	-0.00421971
+	-0.00421971	2.59255e-06
+--------------------------------
+Strip 15
+--------------------------------
+Deadlayer corrected source 
+	{(3159.86, 1)}
+	{(5088.14, 0.119615), (5127.01, 0.171409), (5139.33, 0.708976)}
+	{(5746.5, 0.231), (5788.89, 0.769)}
+Peaks:
+	Energy: 3159.86  Channel: 1059.73  Uncertaincy: 0.133399
+	Energy: 5088.14  Channel: 1651.62  Uncertaincy: 0.155485
+	Energy: 5127.01  Channel: 1663.55  Uncertaincy: 0.155485
+	Energy: 5139.33  Channel: 1667.33  Uncertaincy: 0.155485
+	Energy: 5746.5  Channel: 1853.4  Uncertaincy: 0.185912
+	Energy: 5788.89  Channel: 1866.41  Uncertaincy: 0.185912
+Results: 
+	Offset: -293.879 ± 2.76017
+	Slope:  3.25884 ± 0.00168484
+	Chi^2/ndf:  0.616313/4 = 0.154078
+Covariance matrix
+	7.61851	-0.00458493
+	-0.00458493	2.8387e-06
+--------------------------------
+Strip 16
+--------------------------------
+Deadlayer corrected source 
+	{(3158.97, 1)}
+	{(5087.46, 0.119615), (5126.34, 0.171409), (5138.66, 0.708976)}
+	{(5745.87, 0.231), (5788.27, 0.769)}
+Peaks:
+	Energy: 3158.97  Channel: 1003.53  Uncertaincy: 0.116926
+	Energy: 5087.46  Channel: 1566.56  Uncertaincy: 0.143934
+	Energy: 5126.34  Channel: 1577.9  Uncertaincy: 0.143934
+	Energy: 5138.66  Channel: 1581.5  Uncertaincy: 0.143934
+	Energy: 5745.87  Channel: 1758.42  Uncertaincy: 0.171335
+	Energy: 5788.27  Channel: 1770.79  Uncertaincy: 0.171335
+Results: 
+	Offset: -280.01 ± 2.72098
+	Slope:  3.42657 ± 0.00175189
+	Chi^2/ndf:  0.998605/4 = 0.249651
+Covariance matrix
+	7.40373	-0.00469878
+	-0.00469878	3.06913e-06
+Warnings:
+	W0: Calibration is outlier!
+======================================================
+Calibrating Back
+======================================================
+
+--------------------------------
+Strip 1
+--------------------------------
+Deadlayer corrected source 
+	{(3158.97, 1)}
+	{(5087.46, 0.119615), (5126.34, 0.171409), (5138.66, 0.708976)}
+	{(5745.87, 0.231), (5788.27, 0.769)}
+Peaks:
+	Energy: 3158.97  Channel: 1130.94  Uncertaincy: 0.0675002
+	Energy: 5087.46  Channel: 1778.92  Uncertaincy: 0.0823439
+	Energy: 5126.34  Channel: 1791.98  Uncertaincy: 0.0823439
+	Energy: 5138.66  Channel: 1796.11  Uncertaincy: 0.0823439
+	Energy: 5745.87  Channel: 1999.28  Uncertaincy: 0.0982347
+	Energy: 5788.27  Channel: 2013.52  Uncertaincy: 0.0982347
+Results: 
+	Offset: -210.437 ± 2.52139
+	Slope:  2.97868 ± 0.00142233
+	Chi^2/ndf:  5.1532/4 = 1.2883
+Covariance matrix
+	6.35741	-0.00353582
+	-0.00353582	2.02301e-06
+--------------------------------
+Strip 2
+--------------------------------
+Deadlayer corrected source 
+	{(3159.86, 1)}
+	{(5088.14, 0.119615), (5127.01, 0.171409), (5139.33, 0.708976)}
+	{(5746.5, 0.231), (5788.89, 0.769)}
+Peaks:
+	Energy: 3159.86  Channel: 1162.52  Uncertaincy: 0.0562355
+	Energy: 5088.14  Channel: 1824.8  Uncertaincy: 0.0738304
+	Energy: 5127.01  Channel: 1838.14  Uncertaincy: 0.0738304
+	Energy: 5139.33  Channel: 1842.37  Uncertaincy: 0.0738304
+	Energy: 5746.5  Channel: 2050.25  Uncertaincy: 0.0663145
+	Energy: 5788.89  Channel: 2064.8  Uncertaincy: 0.0663145
+Results: 
+	Offset: -227.621 ± 2.50702
+	Slope:  2.91346 ± 0.00137661
+	Chi^2/ndf:  2.97453/4 = 0.743633
+Covariance matrix
+	6.28514	-0.00340326
+	-0.00340326	1.89505e-06
+--------------------------------
+Strip 3
+--------------------------------
+Deadlayer corrected source 
+	{(3160.65, 1)}
+	{(5088.74, 0.119615), (5127.61, 0.171409), (5139.92, 0.708976)}
+	{(5747.06, 0.231), (5789.45, 0.769)}
+Peaks:
+	Energy: 3160.65  Channel: 1171.28  Uncertaincy: 0.0616392
+	Energy: 5088.74  Channel: 1821  Uncertaincy: 0.0730511
+	Energy: 5127.61  Channel: 1834.09  Uncertaincy: 0.0730511
+	Energy: 5139.92  Channel: 1838.24  Uncertaincy: 0.0730511
+	Energy: 5747.06  Channel: 2042.32  Uncertaincy: 0.0854422
+	Energy: 5789.45  Channel: 2056.6  Uncertaincy: 0.0854422
+Results: 
+	Offset: -317.338 ± 2.56204
+	Slope:  2.96905 ± 0.00141118
+	Chi^2/ndf:  1.803/4 = 0.450751
+Covariance matrix
+	6.56405	-0.00356695
+	-0.00356695	1.99142e-06
+--------------------------------
+Strip 4
+--------------------------------
+Deadlayer corrected source 
+	{(3161.33, 1)}
+	{(5089.25, 0.119615), (5128.13, 0.171409), (5140.44, 0.708976)}
+	{(5747.54, 0.231), (5789.93, 0.769)}
+Peaks:
+	Energy: 3161.33  Channel: 1170.44  Uncertaincy: 0.0481061
+	Energy: 5089.25  Channel: 1821.89  Uncertaincy: 0.0621302
+	Energy: 5128.13  Channel: 1835.02  Uncertaincy: 0.0621302
+	Energy: 5140.44  Channel: 1839.18  Uncertaincy: 0.0621302
+	Energy: 5747.54  Channel: 2043.89  Uncertaincy: 0.0650507
+	Energy: 5789.93  Channel: 2058.2  Uncertaincy: 0.0650507
+Results: 
+	Offset: -304.366 ± 2.5379
+	Slope:  2.96072 ± 0.00139631
+	Chi^2/ndf:  1.31262/4 = 0.328156
+Covariance matrix
+	6.44092	-0.00349603
+	-0.00349603	1.94969e-06
+--------------------------------
+Strip 5
+--------------------------------
+Deadlayer corrected source 
+	{(3161.89, 1)}
+	{(5089.68, 0.119615), (5128.55, 0.171409), (5140.86, 0.708976)}
+	{(5747.93, 0.231), (5790.32, 0.769)}
+Peaks:
+	Energy: 3161.89  Channel: 1154.19  Uncertaincy: 0.0472078
+	Energy: 5089.68  Channel: 1805.57  Uncertaincy: 0.0606783
+	Energy: 5128.55  Channel: 1818.7  Uncertaincy: 0.0606783
+	Energy: 5140.86  Channel: 1822.86  Uncertaincy: 0.0606783
+	Energy: 5747.93  Channel: 2027.65  Uncertaincy: 0.0633921
+	Energy: 5790.32  Channel: 2041.97  Uncertaincy: 0.0633921
+Results: 
+	Offset: -255.404 ± 2.51372
+	Slope:  2.96053 ± 0.00139528
+	Chi^2/ndf:  0.790035/4 = 0.197509
+Covariance matrix
+	6.31881	-0.00345932
+	-0.00345932	1.9468e-06
+--------------------------------
+Strip 6
+--------------------------------
+Deadlayer corrected source 
+	{(3162.33, 1)}
+	{(5090.01, 0.119615), (5128.88, 0.171409), (5141.19, 0.708976)}
+	{(5748.24, 0.231), (5790.63, 0.769)}
+Peaks:
+	Energy: 3162.33  Channel: 1159.52  Uncertaincy: 0.0446868
+	Energy: 5090.01  Channel: 1811.12  Uncertaincy: 0.0540551
+	Energy: 5128.88  Channel: 1824.25  Uncertaincy: 0.0540551
+	Energy: 5141.19  Channel: 1828.41  Uncertaincy: 0.0540551
+	Energy: 5748.24  Channel: 2033.26  Uncertaincy: 0.0592789
+	Energy: 5790.63  Channel: 2047.59  Uncertaincy: 0.0592789
+Results: 
+	Offset: -269.462 ± 2.51204
+	Slope:  2.95942 ± 0.00139004
+	Chi^2/ndf:  0.849093/4 = 0.212273
+Covariance matrix
+	6.31036	-0.0034442
+	-0.0034442	1.9322e-06
+--------------------------------
+Strip 7
+--------------------------------
+Deadlayer corrected source 
+	{(3162.62, 1)}
+	{(5090.23, 0.119615), (5129.1, 0.171409), (5141.41, 0.708976)}
+	{(5748.45, 0.231), (5790.83, 0.769)}
+Peaks:
+	Energy: 3162.62  Channel: 1187.77  Uncertaincy: 0.0465635
+	Energy: 5090.23  Channel: 1851.73  Uncertaincy: 0.0592986
+	Energy: 5129.1  Channel: 1865.11  Uncertaincy: 0.0592986
+	Energy: 5141.41  Channel: 1869.35  Uncertaincy: 0.0592986
+	Energy: 5748.45  Channel: 2077.64  Uncertaincy: 0.0601411
+	Energy: 5790.83  Channel: 2092.23  Uncertaincy: 0.0601411
+Results: 
+	Offset: -289.079 ± 2.52675
+	Slope:  2.90549 ± 0.00136756
+	Chi^2/ndf:  4.4799/4 = 1.11997
+Covariance matrix
+	6.38448	-0.00340881
+	-0.00340881	1.87022e-06
+--------------------------------
+Strip 8
+--------------------------------
+Deadlayer corrected source 
+	{(3162.77, 1)}
+	{(5090.35, 0.119615), (5129.21, 0.171409), (5141.53, 0.708976)}
+	{(5748.55, 0.231), (5790.94, 0.769)}
+Peaks:
+	Energy: 3162.77  Channel: 1186.79  Uncertaincy: 0.0518491
+	Energy: 5090.35  Channel: 1846.78  Uncertaincy: 0.0622556
+	Energy: 5129.21  Channel: 1860.08  Uncertaincy: 0.0622556
+	Energy: 5141.53  Channel: 1864.3  Uncertaincy: 0.0622556
+	Energy: 5748.55  Channel: 2071.44  Uncertaincy: 0.0658609
+	Energy: 5790.94  Channel: 2085.94  Uncertaincy: 0.0658609
+Results: 
+	Offset: -306.342 ± 2.53866
+	Slope:  2.92262 ± 0.00137785
+	Chi^2/ndf:  3.42048/4 = 0.85512
+Covariance matrix
+	6.44479	-0.00345086
+	-0.00345086	1.89846e-06
+--------------------------------
+Strip 9
+--------------------------------
+Deadlayer corrected source 
+	{(3162.77, 1)}
+	{(5090.35, 0.119615), (5129.21, 0.171409), (5141.53, 0.708976)}
+	{(5748.55, 0.231), (5790.94, 0.769)}
+Peaks:
+	Energy: 3162.77  Channel: 1177.51  Uncertaincy: 0.0497727
+	Energy: 5090.35  Channel: 1833.65  Uncertaincy: 0.060014
+	Energy: 5129.21  Channel: 1846.88  Uncertaincy: 0.060014
+	Energy: 5141.53  Channel: 1851.07  Uncertaincy: 0.060014
+	Energy: 5748.55  Channel: 2057.21  Uncertaincy: 0.0639961
+	Energy: 5790.94  Channel: 2071.63  Uncertaincy: 0.0639961
+Results: 
+	Offset: -298.495 ± 2.53625
+	Slope:  2.93915 ± 0.00138627
+	Chi^2/ndf:  1.68435/4 = 0.421086
+Covariance matrix
+	6.43257	-0.00346865
+	-0.00346865	1.92174e-06
+--------------------------------
+Strip 10
+--------------------------------
+Deadlayer corrected source 
+	{(3162.62, 1)}
+	{(5090.23, 0.119615), (5129.1, 0.171409), (5141.41, 0.708976)}
+	{(5748.45, 0.231), (5790.83, 0.769)}
+Peaks:
+	Energy: 3162.62  Channel: 1200.58  Uncertaincy: 0.0498459
+	Energy: 5090.23  Channel: 1864.09  Uncertaincy: 0.0619155
+	Energy: 5129.1  Channel: 1877.47  Uncertaincy: 0.0619155
+	Energy: 5141.41  Channel: 1881.7  Uncertaincy: 0.0619155
+	Energy: 5748.45  Channel: 2089.96  Uncertaincy: 0.0664344
+	Energy: 5790.83  Channel: 2104.55  Uncertaincy: 0.0664344
+Results: 
+	Offset: -328.124 ± 2.55139
+	Slope:  2.90709 ± 0.00137203
+	Chi^2/ndf:  3.29469/4 = 0.823673
+Covariance matrix
+	6.50961	-0.00345404
+	-0.00345404	1.88248e-06
+--------------------------------
+Strip 11
+--------------------------------
+Deadlayer corrected source 
+	{(3162.33, 1)}
+	{(5090.01, 0.119615), (5128.88, 0.171409), (5141.19, 0.708976)}
+	{(5748.24, 0.231), (5790.63, 0.769)}
+Peaks:
+	Energy: 3162.33  Channel: 1194.25  Uncertaincy: 0.0473444
+	Energy: 5090.01  Channel: 1849.56  Uncertaincy: 0.0597748
+	Energy: 5128.88  Channel: 1862.76  Uncertaincy: 0.0597748
+	Energy: 5141.19  Channel: 1866.94  Uncertaincy: 0.0597748
+	Energy: 5748.24  Channel: 2072.64  Uncertaincy: 0.0612725
+	Energy: 5790.63  Channel: 2087.04  Uncertaincy: 0.0612725
+Results: 
+	Offset: -353.615 ± 2.56052
+	Slope:  2.9436 ± 0.00138765
+	Chi^2/ndf:  3.17516/4 = 0.79379
+Covariance matrix
+	6.55625	-0.00350629
+	-0.00350629	1.92556e-06
+--------------------------------
+Strip 12
+--------------------------------
+Deadlayer corrected source 
+	{(3161.89, 1)}
+	{(5089.68, 0.119615), (5128.55, 0.171409), (5140.86, 0.708976)}
+	{(5747.93, 0.231), (5790.32, 0.769)}
+Peaks:
+	Energy: 3161.89  Channel: 1174.29  Uncertaincy: 0.0499917
+	Energy: 5089.68  Channel: 1829.32  Uncertaincy: 0.0619513
+	Energy: 5128.55  Channel: 1842.52  Uncertaincy: 0.0619513
+	Energy: 5140.86  Channel: 1846.7  Uncertaincy: 0.0619513
+	Energy: 5747.93  Channel: 2052.32  Uncertaincy: 0.0669827
+	Energy: 5790.32  Channel: 2066.71  Uncertaincy: 0.0669827
+Results: 
+	Offset: -296.875 ± 2.53612
+	Slope:  2.94496 ± 0.00138973
+	Chi^2/ndf:  3.00964/4 = 0.75241
+Covariance matrix
+	6.43189	-0.00347701
+	-0.00347701	1.93134e-06
+--------------------------------
+Strip 13
+--------------------------------
+Deadlayer corrected source 
+	{(3161.33, 1)}
+	{(5089.25, 0.119615), (5128.13, 0.171409), (5140.44, 0.708976)}
+	{(5747.54, 0.231), (5789.93, 0.769)}
+Peaks:
+	Energy: 3161.33  Channel: 1196.77  Uncertaincy: 0.0527178
+	Energy: 5089.25  Channel: 1849.84  Uncertaincy: 0.0648964
+	Energy: 5128.13  Channel: 1863  Uncertaincy: 0.0648964
+	Energy: 5140.44  Channel: 1867.16  Uncertaincy: 0.0648964
+	Energy: 5747.54  Channel: 2071.89  Uncertaincy: 0.0678284
+	Energy: 5789.93  Channel: 2086.24  Uncertaincy: 0.0678284
+Results: 
+	Offset: -375.644 ± 2.57575
+	Slope:  2.9548 ± 0.001396
+	Chi^2/ndf:  6.0022/4 = 1.50055
+Covariance matrix
+	6.63451	-0.00354866
+	-0.00354866	1.94882e-06
+--------------------------------
+Strip 14
+--------------------------------
+Deadlayer corrected source 
+	{(3160.65, 1)}
+	{(5088.74, 0.119615), (5127.61, 0.171409), (5139.92, 0.708976)}
+	{(5747.06, 0.231), (5789.45, 0.769)}
+Peaks:
+	Energy: 3160.65  Channel: 1165.09  Uncertaincy: 0.0518354
+	Energy: 5088.74  Channel: 1811.03  Uncertaincy: 0.0615598
+	Energy: 5127.61  Channel: 1824.05  Uncertaincy: 0.0615598
+	Energy: 5139.92  Channel: 1828.18  Uncertaincy: 0.0615598
+	Energy: 5747.06  Channel: 2031.11  Uncertaincy: 0.0682894
+	Energy: 5789.45  Channel: 2045.31  Uncertaincy: 0.0682894
+Results: 
+	Offset: -319.042 ± 2.54874
+	Slope:  2.9863 ± 0.00141076
+	Chi^2/ndf:  1.57509/4 = 0.393772
+Covariance matrix
+	6.49606	-0.0035476
+	-0.0035476	1.99023e-06
+--------------------------------
+Strip 15
+--------------------------------
+Deadlayer corrected source 
+	{(3159.86, 1)}
+	{(5088.14, 0.119615), (5127.01, 0.171409), (5139.33, 0.708976)}
+	{(5746.5, 0.231), (5788.89, 0.769)}
+Peaks:
+	Energy: 3159.86  Channel: 1183.3  Uncertaincy: 0.0547239
+	Energy: 5088.14  Channel: 1829.73  Uncertaincy: 0.0672692
+	Energy: 5127.01  Channel: 1842.75  Uncertaincy: 0.0672692
+	Energy: 5139.33  Channel: 1846.88  Uncertaincy: 0.0672692
+	Energy: 5746.5  Channel: 2049.89  Uncertaincy: 0.0689778
+	Energy: 5788.89  Channel: 2064.1  Uncertaincy: 0.0689778
+Results: 
+	Offset: -372.219 ± 2.5762
+	Slope:  2.98457 ± 0.00141146
+	Chi^2/ndf:  2.04603/4 = 0.511507
+Covariance matrix
+	6.63679	-0.00358846
+	-0.00358846	1.99222e-06
+--------------------------------
+Strip 16
+--------------------------------
+Deadlayer corrected source 
+	{(3158.97, 1)}
+	{(5087.46, 0.119615), (5126.34, 0.171409), (5138.66, 0.708976)}
+	{(5745.87, 0.231), (5788.27, 0.769)}
+Peaks:
+	Energy: 3158.97  Channel: 1182.98  Uncertaincy: 0.0710421
+	Energy: 5087.46  Channel: 1841.15  Uncertaincy: 0.0858041
+	Energy: 5126.34  Channel: 1854.41  Uncertaincy: 0.0858041
+	Energy: 5138.66  Channel: 1858.61  Uncertaincy: 0.0858041
+	Energy: 5745.87  Channel: 2064.85  Uncertaincy: 0.103409
+	Energy: 5788.27  Channel: 2079.31  Uncertaincy: 0.103409
+Results: 
+	Offset: -311.362 ± 2.57413
+	Slope:  2.9329 ± 0.00140348
+	Chi^2/ndf:  6.7229/4 = 1.68073
+Covariance matrix
+	6.62615	-0.00356383
+	-0.00356383	1.96976e-06
+======================================================

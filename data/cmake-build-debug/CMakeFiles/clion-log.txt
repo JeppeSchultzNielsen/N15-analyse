@@ -1,0 +1,1 @@
+CMakeLists.txt not found in /home/jeppe/devel/projects/N15data/data Select CMakeLists.txt
