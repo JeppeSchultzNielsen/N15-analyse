@@ -243,14 +243,14 @@ public:
 
         //for hvert hit lægger vi hittets information ind i vores dynamicbranches
         for (auto &hit: hits) {
-            if(hit.index == 0){
+            /*if(hit.index == 0){
                 mul -= 1;
                 continue;}
             auto bi = hit.bseg;
             if((hit.index == 2 && (bi == 13 || bi == 14 || bi == 15 || bi == 16))){
                 mul -= 1;
                 continue;
-            }
+            }*/
             v_pos->add(hit.position);
             v_dir->add(hit.direction);
             v_theta->add(hit.theta * TMath::RadToDeg());
