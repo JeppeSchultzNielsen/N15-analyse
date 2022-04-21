@@ -212,7 +212,6 @@ public:
                     hit.E += calc->getTotalEnergyCorrection(hit.E, intersection.transversed);
                     hit.FE += calc->getTotalEnergyCorrection(hit.FE, intersection.transversed);
                     hit.BE += calc->getTotalEnergyCorrection(hit.BE, intersection.transversed);
-
                 }
 
                 //assign detektorindekset til hittet. Der laves også en Lorentz-vektor, ligner godt nok, at vi
@@ -237,20 +236,19 @@ public:
         //hvis der ikke er nogen hits i dette event stopper vi med det samme. Men hvordan ville der nogensinde
         //være et event hvor der ikke var nogle hits?
         if (hits.empty()) return;
-
         //multipliciteten af eventet er antallet af hits.
         mul = hits.size();
 
         //for hvert hit lægger vi hittets information ind i vores dynamicbranches
         for (auto &hit: hits) {
-            /*if(hit.index == 0){
+            if(hit.index == 0){
                 mul -= 1;
                 continue;}
             auto bi = hit.bseg;
             if((hit.index == 2 && (bi == 13 || bi == 14 || bi == 15 || bi == 16))){
                 mul -= 1;
                 continue;
-            }*/
+            }
             v_pos->add(hit.position);
             v_dir->add(hit.direction);
             v_theta->add(hit.theta * TMath::RadToDeg());

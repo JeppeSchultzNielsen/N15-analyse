@@ -16,4 +16,6 @@ double gaussSum(double *x, double *par);
 std::vector<double> findCurrent(string in);
 std::vector<double> cmEfitter(string in, string factor, Ion target);
 vector<double> factorFitter(vector<double> gevs, vector<double> measureds, vector<double> errors, Ion target, Ion beam, string factor);
+void createFileN15(string in, double energyGV, double factor, Ion targetIon);
+void createFileCutOff(string in, double energyGV, double factor, Ion targetIon);
 #endif //ALUSCATTERING_RUNNER_H

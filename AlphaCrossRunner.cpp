@@ -34,13 +34,13 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    for (int j = 0; j < 4; j++) {
+    for (int j = 0; j < 1; j++) {
         string targetStr = adresses[j].substr(0, 1);
         double energyGV = stoi(regex_replace(adresses[j], regex(R"([\D])"), ""));
         string energyString = to_string(energyGV);
-        double factor = 1.1666;
+        double factor = 1.164;
         if (targetStr == "N") {
-            createFile(adresses[j], energyGV, factor, Ion("N15"));
+            createFileCutOff(adresses[j], energyGV, factor, Ion("N15"));
         }
     }
 }
