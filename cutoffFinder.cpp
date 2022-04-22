@@ -6,7 +6,6 @@
 #include <ausa/util/StringUtil.h>
 #include <ausa/util/FileUtil.h>
 #include <ausa/setup/DoubleSidedSiliconDetector.h>
-#include <ausa/setup/SingleSidedSiliconDetector.h>
 #include <ausa/util/DynamicBranchVector.h>
 #include <ausa/eloss/Default.h>
 #include <ausa/constants/Mass.h>
@@ -14,10 +13,8 @@
 #include <Math/Vector3D.h>
 #include <TROOT.h>
 #include <ctime>
-#include <libconfig.h++>
 #include "include/Hit.h"
 #include "include/runner.h"
-#include <regex>
 
 using namespace std;
 using namespace AUSA;
@@ -25,7 +22,6 @@ using namespace ROOT::Math;
 using namespace AUSA::Sort;
 using namespace AUSA::EnergyLoss;
 using namespace AUSA::Constants;
-using namespace libconfig;
 
 class MyAnalysisCutOff : public AbstractSortedAnalyzer {
 public:
@@ -104,6 +100,7 @@ public:
         SiCalc = defaultRangeInverter("He4", "Silicon");
         SiCalcC12 = defaultRangeInverter("C12", "Silicon");
         for (auto &layer: target.getLayers()) {
+            targetCalcs.push_back(defaultRangeInverter(Ion::predefined("C12"), layer.getMaterial()));
             targetCalcsC12.push_back(defaultRangeInverter(Ion::predefined("C12"), layer.getMaterial()));
         }
     }
@@ -126,8 +123,6 @@ public:
 
     //Hjælpefunktion til analyze (analyze bliver kørt for hvert event i output)
     void findHits() {
-        //først finder jeg multipli
-
         //Vi looper over alle detektorene
         for (size_t i = 0; i < output.dssdCount(); i++) {
             //Hent outputs fra hver detektor. Find også multipliciteten i detektoren for det pågældende event?
@@ -191,59 +186,170 @@ public:
                 auto angle = hit.direction.Angle(-d.getNormal());
                 hit.angle = angle;
 
-                auto tF = deadlayerF[i] / abs(cos(angle));
-                auto tB = deadlayerB[i] / abs(cos(angle));
-                //auto tP = deadlayerP[i] / abs(cos(angle));
-
                 //initialiser nogle variable (lidt mærkeligt det her? De kunne bare være initialiseret som de
                 //originale energier, eDssd osv - de bliver tillagt senere
                 double E = 0.0;
                 double FE = 0.0;
                 double BE = 0.0;
-
+                E += eDssd;
+                FE += eFDssd;
+                BE += eBDssd;
                 //assigner energier til hittet efter der er blevet lavet energikorrektioner følgende det døde
                 //lag i detektoren.
-                E += eDssd;
-                E += SiCalc->getTotalEnergyCorrection(E, tF);
-                FE += eFDssd;
-                FE += SiCalc->getTotalEnergyCorrection(FE, tF);
-                BE += eBDssd;
-                BE += SiCalc->getTotalEnergyCorrection(BE, tF);
-
                 hit.E = E;
                 hit.BE = BE;
                 hit.FE = FE;
-
-                //jeg ved ikke hvad der sker her, det er noget mere energikorrektion.
-                auto &from = position;
-                for (auto &intersection: target.getIntersections(from, target.getCenter())) {
-                    auto &calc = targetCalcs[intersection.index];
-                    hit.E += calc->getTotalEnergyCorrection(hit.E, intersection.transversed);
-                    hit.FE += calc->getTotalEnergyCorrection(hit.FE, intersection.transversed);
-                    hit.BE += calc->getTotalEnergyCorrection(hit.BE, intersection.transversed);
-                }
-
-                //assign detektorindekset til hittet. Der laves også en Lorentz-vektor, ligner godt nok, at vi
-                //antager, at det er alpha-partikler - skal nok ændres hvis det skal bruges.
                 hit.index = i;
-                hit.lVector = {TMath::Sqrt((hit.E + ALPHA_MASS)*(hit.E + ALPHA_MASS) - ALPHA_MASS*ALPHA_MASS) * hit.direction, hit.E + ALPHA_MASS};
-                hit.lVector.Boost(-1*beta);
-                hit.cmEnergy = hit.lVector[3] - ALPHA_MASS;
-
-                hit.lVector2 = {sqrt(2 * hit.E * ALPHA_MASS) * hit.direction, hit.E + ALPHA_MASS};
-                hit.lVector2.Boost(-1*beta2);
-                hit.cmEnergy2 = hit.lVector2[3] - ALPHA_MASS;
-
                 //vedhæft dette hit til vores liste af hits.
                 hits.emplace_back(move(hit));
             }
         }
     }
 
-    vector<Hit> findCoincidences(vector<Hit> hits){
-        if( hits.size() != 2){
-            return {};
+    // returnerer potentielle alpha'er og C12er
+    vector<vector<Hit>> findPairs(vector<Hit> hits){
+        if(hits.size() == 2){
+            hits[0].mulindex = 0;
+            hits[1].mulindex = 1;
+            if(hits[0].E > hits[1].E){
+                return {{hits[0]},{hits[1]}};
+            }
+            else{
+                return {{hits[1]},{hits[0]}};
+            }
         }
+
+        vector<Hit> c12Hits = {};
+        vector<Hit> alphaHits = {};
+
+        //beregn en matrix af alle vinkler
+        vector<vector<double>> angleMatrix = {};
+        for(int i = 0; i < hits.size(); i++){
+            vector<double> theseAngles = {};
+            for(int k = 0; k < hits.size(); k++){
+                if(k == i){
+                    theseAngles.push_back(0);
+                    continue;
+                }
+                theseAngles.push_back(hits[i].direction.Angle(hits[k].direction));
+            }
+            angleMatrix.push_back(theseAngles);
+        }
+        //for hvert hit finder jeg nu dens mest sandsynlige partner
+        for(int i = 0; i < angleMatrix.size(); i++){
+            int k_mostlikely = 0;
+            double largestAngle = 0;
+            for(int k = 0; k < angleMatrix.size(); k++){
+                if(angleMatrix[i][k] > largestAngle){
+                    k_mostlikely = k;
+                    largestAngle = angleMatrix[i][k];
+                }
+            }
+            hits[i].mulindex = i;
+            hits[k_mostlikely].mulindex = k_mostlikely;
+            //det er nu bestemt at i's partner er k_mostlikely. assign dem som enten alpha eller c12:
+            if(hits[i].E > hits[k_mostlikely].E){
+                alphaHits.push_back(hits[i]);
+                c12Hits.push_back(hits[k_mostlikely]);
+            }
+            else{
+                alphaHits.push_back(hits[k_mostlikely]);
+                c12Hits.push_back(hits[i]);
+            }
+        }
+        return {alphaHits,c12Hits};
+    }
+
+    vector<Hit> sortPairs(vector<vector<Hit>> hitPairs){
+        //array der holder de største vinkler for hvert hit
+        double angDiffs[hitPairs[0].size()];
+        std::fill_n(angDiffs,hitPairs[0].size(),0);
+        //arrat der holder indekset til partneren, der giver den største vinkel
+        double partnerIndex[hitPairs[0].size()];
+
+        //for hvert par, lav energikorrektioner og find vinklen mellem dem i CM-rammen
+        for(int i = 0; i < hitPairs[0].size(); i++){
+            Hit alphaHit = hitPairs[0][i];
+            Hit c12Hit = hitPairs[1][i];
+            auto tFA = deadlayerF[i] / abs(cos(alphaHit.angle));
+            auto tFC  = deadlayerF[i] / abs(cos(c12Hit.angle));
+            alphaHit.E += SiCalc->getTotalEnergyCorrection(alphaHit.E, tFA);
+            c12Hit.E += SiCalcC12->getTotalEnergyCorrection(c12Hit.E, tFC);
+
+            for (auto &intersection: target.getIntersections(alphaHit.position, target.getCenter())) {
+                auto &calc = targetCalcs[intersection.index];
+                alphaHit.E += calc->getTotalEnergyCorrection(alphaHit.E, intersection.transversed);
+            }
+            for (auto &intersection: target.getIntersections(c12Hit.position, target.getCenter())) {
+                auto &calc = targetCalcsC12[intersection.index];
+                c12Hit.E += calc->getTotalEnergyCorrection(c12Hit.E, intersection.transversed);
+            }
+
+            alphaHit.lVector = {TMath::Sqrt((alphaHit.E + ALPHA_MASS)*(alphaHit.E + ALPHA_MASS) - ALPHA_MASS*ALPHA_MASS) * alphaHit.direction, alphaHit.E + ALPHA_MASS};
+            alphaHit.lVector.Boost(-1*beta);
+            alphaHit.cmEnergy = alphaHit.lVector[3] - ALPHA_MASS;
+
+            alphaHit.lVector2 = {sqrt(2 * alphaHit.E * ALPHA_MASS) * alphaHit.direction, alphaHit.E + ALPHA_MASS};
+            alphaHit.lVector2.Boost(-1*beta2);
+            alphaHit.cmEnergy2 = alphaHit.lVector2[3] - ALPHA_MASS;
+
+            auto c12mass = Ion("C12").getMass();
+            c12Hit.lVector = {TMath::Sqrt((c12Hit.E + c12mass)*(c12Hit.E + c12mass) - c12mass*c12mass) * c12Hit.direction, c12Hit.E + c12mass};
+            c12Hit.lVector.Boost(-1*beta);
+            c12Hit.cmEnergy = c12Hit.lVector[3] - c12mass;
+
+            c12Hit.lVector2 = {sqrt(2 * c12Hit.E * c12mass) * c12Hit.direction, c12Hit.E + c12mass};
+            c12Hit.lVector2.Boost(-1*beta2);
+            c12Hit.cmEnergy2 = c12Hit.lVector2[3] - c12mass;
+
+            auto angDiff = c12Hit.lVector.Vect().Angle(alphaHit.lVector.Vect())*TMath::RadToDeg();
+            auto pCM = (c12Hit.lVector.Vect() + alphaHit.lVector.Vect()).Mag();
+
+            c12Hit.angDiff = angDiff;
+            alphaHit.angDiff = angDiff;
+            c12Hit.pCM = pCM;
+            alphaHit.pCM = pCM;
+
+            if(angDiff > angDiffs[c12Hit.mulindex]){
+                angDiffs[c12Hit.mulindex] = angDiff;
+                partnerIndex[c12Hit.mulindex] = alphaHit.mulindex;
+            }
+            if(angDiff > angDiffs[alphaHit.mulindex]){
+                angDiffs[alphaHit.mulindex] = angDiff;
+                partnerIndex[alphaHit.mulindex] = c12Hit.mulindex;
+            }
+        }
+        //hvis vi kun har ét par behøver vi ikke at bøvle med det næste
+        if(hitPairs[0].size() == 1){
+            return {hitPairs[0][0],hitPairs[1][0]};
+        }
+        vector<Hit> sortedHits = {};
+        //nu har jeg et array der for hvert hit indeholder vinkelforskellen i CM til dens partner, og et index på denne partner.
+        //Jeg vil kun ende med at have unikke events. Derfor skal jeg løbe igennem listen og finde konflikter og løse dem
+        //ved at finde den største CM-vinkel.
+        for(int i = 0; i < hitPairs[0].size(); i++){
+            double maximumAngle = angDiffs[i];
+            int partner = partnerIndex[i];
+            bool betterFound = false;
+            for(int k = i; k < hitPairs[0].size(); k++){
+                //er der andre hits, der også er partner med i's partner?
+                if(partnerIndex[k] == partner && angDiffs[k] > maximumAngle){
+                    betterFound = true;
+                }
+                //er der andre hits, der også er partner med i?
+                if(partnerIndex[k] == i && angDiffs[k] > maximumAngle){
+                    betterFound = true;
+                }
+            }
+            if(!betterFound){
+                sortedHits.push_back(hitPairs[0][i]);
+                sortedHits.push_back(hitPairs[1][i]);
+            }
+        }
+        return sortedHits;
+    }
+
+    vector<Hit> findCoincidences(vector<Hit> hits){
         return hits;
     }
 
@@ -251,7 +357,8 @@ public:
     void doAnalysis() {
         //hvis der ikke er nogen hits i dette event stopper vi med det samme. Men hvordan ville der nogensinde
         //være et event hvor der ikke var nogle hits?
-        auto coinHits = findCoincidences(hits);
+        auto foundPairs = findPairs(hits);
+        auto coinHits = sortPairs(foundPairs);
         if (coinHits.empty()) return;
         //multipliciteten af eventet er antallet af hits.
         mul = coinHits.size();
@@ -287,6 +394,7 @@ public:
             v_BT->add(hit.TB);
             v_cmE->add(hit.cmEnergy);
             v_cmE2->add(hit.cmEnergy2);
+            cout << hit.BE << endl;
         }
     }
 
