@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(AUSALIB REQUIRED)
 
-add_executable(cross AlphaCrossRunner.cpp cutoffFinder.cpp)
+add_executable(cross AlphaCrossRunner.cpp N15Ecorrector.cpp)
 target_link_libraries(cross PRIVATE AUSA::AUSA)
 add_executable(AccCalibRunner AccCalibrationRunner.cpp calibrationEcorrector.cpp cmEgaussFitter.cpp factorFitter.cpp)
 target_link_libraries(AccCalibRunner PRIVATE AUSA::AUSA)

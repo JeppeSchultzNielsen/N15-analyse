@@ -39,8 +39,10 @@ int main(int argc, char *argv[]) {
         double energyGV = stoi(regex_replace(adresses[j], regex(R"([\D])"), ""));
         string energyString = to_string(energyGV);
         double factor = 1.164;
+        cout << "hej" << endl;
         if (targetStr == "N") {
-            createFileCutOff(adresses[j], energyGV, factor, Ion("N15"));
+            createFileN15(adresses[j], energyGV, factor, Ion("N15"));
+
         }
     }
 }
