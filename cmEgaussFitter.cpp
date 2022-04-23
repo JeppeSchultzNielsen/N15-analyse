@@ -92,7 +92,7 @@ vector<double> cmEfitter(string in, string factor, Ion target){
     beamVector.Boost(-boostVector);
     auto cmEnergy = beamVector[3];
     double expectedE = (pow(cmEnergy,2)+pow(PROTON_MASS,2) - pow(mAl,2))/(2*cmEnergy) - PROTON_MASS;
-    string histRoot = "cmEhists/"+ targetStr + energyString+ "f" + factor + ".root";
+    string histRoot = "scatteringAccCalib/cmEhists/"+ targetStr + energyString+ "f" + factor + ".root";
     TFile output(histRoot.c_str(), "RECREATE");
 
     auto *s = new TSpectrum(100);

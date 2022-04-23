@@ -53,7 +53,7 @@
       "name" : "SU",
       "file" : "AUS3_1000_00.json",
       "calibration" : "SU.cal",
-      "position" : {"x":"-0.8 mm", "y":"-1.16 mm", "z":"-35 mm"},
+      "position" : {"x":"-1 mm", "y":"-1.7 mm", "z":"-35 mm"},
       "normal" : {"x":"0 mm", "y":"0 mm", "z":"1 mm"},
       "orientation" : {"x":"1 mm", "y":"0 mm", "z":"0 mm"},
       "frontMapping" : {

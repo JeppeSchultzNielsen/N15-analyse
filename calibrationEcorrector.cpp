@@ -19,6 +19,7 @@
 #include "include/Hit.h"
 #include "include/runner.h"
 #include <regex>
+#include<stdio.h>
 
 using namespace std;
 using namespace AUSA;
@@ -337,7 +338,7 @@ void createFile(string in, double energyGV, double factor, Ion targetIon){
     SortedReader reader{*setup};
     reader.add("match/" + in);
     reader.setVerbose(true);
-
+    remove(("analyzed/"+targetStr+to_string_with_precision(energyGV,0) +"gv.root").c_str());
     string analyzed = "analyzed/"+targetStr+to_string_with_precision(energyGV,0) +"gv.root";
     TString outfile = analyzed;
 

@@ -7,6 +7,6 @@
  
 
   "layers" : [
-    {"material" : "Aluminium", "thickness" : "61nm", "active":true}      
+    {"material" : "Aluminium", "thickness" : "340nm", "active":true}      
   ]
 }

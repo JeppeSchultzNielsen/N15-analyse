@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(data)
+project(N15data)
 
 include_directories(.)
 include_directories(match)
@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(AUSALIB REQUIRED)
 
-add_executable(cross AlphaCrossRunner.cpp N15Ecorrector.cpp)
-target_link_libraries(cross PRIVATE AUSA::AUSA)
+add_executable(AlphaAccCalib AlphaAccCalibRunner.cpp AlphaAccECorrector.cpp cmEAlphaFitter.cpp AlphaFactorFitter.cpp)
+target_link_libraries(AlphaAccCalib PRIVATE AUSA::AUSA)
 add_executable(AccCalibRunner AccCalibrationRunner.cpp calibrationEcorrector.cpp cmEgaussFitter.cpp factorFitter.cpp)
 target_link_libraries(AccCalibRunner PRIVATE AUSA::AUSA)
