@@ -1,2 +1,0 @@
-RunNo.	Factor	Error
-alpha0	1.167191	0.000011

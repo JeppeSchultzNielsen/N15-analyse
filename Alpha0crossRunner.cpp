@@ -41,18 +41,14 @@ int main(int argc, char *argv[]) {
     vector<double> Vcharge = {};
     vector<double> solidAngle = {};
 
-    i=2;
-
     for(int k = 0; k < i; k++){
         string targetStr = adresses[k].substr(0, 1);
         double energyGV = stoi(regex_replace(adresses[k], regex(R"([\D])"), ""));
         string energyString = to_string(energyGV);
 
-        double factor = 1.16;
+        double factor = 1.167;
         if(targetStr == "N"){
-            cout << "h e" << endl;
             createFileN15(adresses[k], energyGV, factor, Ion("N15"));
-            cout << "h e" << endl;
             auto result = AlphacmEfitter(adresses[k],factor);
             auto current = findCurrent(adresses[k]);
             GV.push_back(energyGV);
