@@ -13,10 +13,10 @@ using namespace AUSA::EnergyLoss;
 void createFile(string in, double energyGV, double factor, Ion targetIon);
 std::vector<double> thickness(string in, int angle);
 double gaussSum(double *x, double *par);
-std::vector<double> findCurrent(string in);
 std::vector<double> cmEfitter(string in, string factor, Ion target);
 vector<double> factorFitter(vector<double> gevs, vector<double> measureds, vector<double> errors, Ion target, Ion beam, Ion ms, Ion ml, string factor);
 void createFileN15(string in, double energyGV, double factor, Ion targetIon);
 void createFileCutOff(string in, double energyGV, double factor, Ion targetIon);
 vector<double> AlphacmEfitter(string in, double factor);
+vector<double> findCurrent(string in);
 #endif //ALUSCATTERING_RUNNER_H

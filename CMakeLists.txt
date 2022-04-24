@@ -9,7 +9,9 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(AUSALIB REQUIRED)
 
-add_executable(AlphaAccCalib AlphaAccCalibRunner.cpp AlphaAccECorrector.cpp cmEAlphaFitter.cpp AlphaFactorFitter.cpp)
+add_executable(AlphaAccCalib AlphaAccCalibRunner.cpp AlphaAccECorrector.cpp AlphacmEFitter.cpp AlphaFactorFitter.cpp)
 target_link_libraries(AlphaAccCalib PRIVATE AUSA::AUSA)
 add_executable(AccCalibRunner AccCalibrationRunner.cpp calibrationEcorrector.cpp cmEgaussFitter.cpp factorFitter.cpp)
 target_link_libraries(AccCalibRunner PRIVATE AUSA::AUSA)
+add_executable(Alpha0Cross Alpha0crossRunner.cpp AlphacmEFitter.cpp VCHARGEfinder.cpp)
+target_link_libraries(Alpha0Cross PRIVATE AUSA::AUSA)

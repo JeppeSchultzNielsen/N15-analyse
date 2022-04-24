@@ -1,0 +1,2 @@
+RunNo.	Factor	Error
+alpha0	1.160350	0.000003

@@ -72,9 +72,9 @@ int main(int argc, char *argv[]){
     ofstream mytxt2 (saveto2);
     mytxt2 << "RunNo.\tFactor\tError\n";
 
-    auto nFactors = findFactors(3,Ion("N15"),adresses,i);
-    auto alFactors = findFactors(3,Ion("Al27"),adresses,i);
-    auto cFactors = findFactors(3,Ion("C12"),adresses,i);
+    auto nFactors = findFactors(2,Ion("N15"),adresses,i);
+    auto alFactors = findFactors(2,Ion("Al27"),adresses,i);
+    auto cFactors = findFactors(2,Ion("C12"),adresses,i);
 
     for(int k = 0; k < nFactors[0].size(); k++){
         cout << nFactors.at(0).at(k) << "+-" << nFactors.at(1).at(k) << endl;

@@ -57,7 +57,6 @@ vector<double> AlphacmEfitter(string in, double factor){
     string energyString = regex_replace(in, regex(R"([\D])"), "");
     double energy = stoi(energyString) * factor;
     //skab en pointer til root-filen der er blevet lavet af analyse.
-
     string analyzed = "analyzed/N" + energyString + "gv.root";
     TFile *myFile = TFile::Open(analyzed.c_str());
     //Hent træet
@@ -98,11 +97,11 @@ vector<double> AlphacmEfitter(string in, double factor){
     TLine *l=new TLine(expectedE,0,expectedE,cmEHist -> GetMaximum());
     l->SetLineColor(kBlack);
 
-    TF1 *fit = new TF1("fit", gauss, expectedE-20, expectedE + 20, 3);
+    TF1 *fit = new TF1("fit", gauss, expectedE-10, expectedE + 100, 3);
     fit->SetParameters(expectedE,10,cmEHist->GetMaximum());
-    TFitResultPtr fp = cmEHist->Fit("fit","s && Q","",expectedE-50,expectedE + 20);
+    TFitResultPtr fp = cmEHist->Fit("fit","s && Q","",expectedE-10,expectedE + 200);
     cmEHist -> Draw();
     l-> Draw();
     c1 -> Write();
-    return {energy,expectedE,fp ->Parameter(0), fp -> Error(0)};
+    return {energy,expectedE,fp ->Parameter(0), fp -> Error(0), fp ->Parameter(2), fp -> Error(2)};
 }

@@ -12,7 +12,7 @@ using namespace std;
 
 
 vector<vector<double>> findFactors(int runs, Ion target, string adresses[], int noAdresses){
-    double factor = 1.17;
+    double factor = 1.16035;
     vector<double> peakPositions = {};
     vector<double> gvs = {};
     vector<double> factors = {};
@@ -33,6 +33,8 @@ vector<vector<double>> findFactors(int runs, Ion target, string adresses[], int 
             string targetStr = adresses[j].substr(0, 1);
             double energyGV = stoi(regex_replace(adresses[j], regex(R"([\D])"), ""));
             string energyString = to_string(energyGV);
+            //der er nærmest ingen counts i 1710 runnet.
+            if(energyGV == 1710) continue;
             if (targetStr == ionString) {
                 createFileN15(adresses[j], energyGV, factor, target);
                 auto result = AlphacmEfitter(adresses[j], factor);
@@ -77,7 +79,7 @@ int main(int argc, char *argv[]) {
     string saveto2 = "accFitAlpha.txt";
     ofstream mytxt2 (saveto2);
     mytxt2 << "RunNo.\tFactor\tError\n";
-    auto aFactors = findFactors(2,Ion("N15"), adresses, i);
+    auto aFactors = findFactors(1,Ion("N15"), adresses, i);
     for(int k = 0; k < aFactors[0].size(); k++){
         cout << aFactors.at(0).at(k) << "+-" << aFactors.at(1).at(k) << endl;
         mytxt2 << "alpha"+to_string(k)+"\t"+to_string(aFactors.at(0).at(k)) + "\t" + to_string(aFactors.at(1).at(k)) + "\n";
