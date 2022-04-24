@@ -306,7 +306,7 @@ public:
                 *v_i, *v_FE, *v_BE,
                 *v_F, *v_B, *v_SAng,
                 *v_ang, *v_pos, *v_dir,
-                *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2
+                *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2, *v_solang
         );
     }
 
@@ -339,7 +339,6 @@ void createFileN15(string in, double energyGV, double factor, Ion targetIon){
     reader.add("match/" + in);
     reader.setVerbose(true);
 
-    remove(("analyzed/"+targetStr+to_string_with_precision(energyGV,0) +"gv.root").c_str());
     string analyzed = "analyzed/"+targetStr+to_string_with_precision(energyGV,0) +"gv.root";
     TString outfile = analyzed;
 

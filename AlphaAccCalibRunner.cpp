@@ -21,7 +21,7 @@ vector<vector<double>> findFactors(int runs, Ion target, string adresses[], int 
 
     string saveto = "AlphaCMs.txt";
     ofstream mytxt (saveto);
-    mytxt << "GV\tAlphaCM\t\AlphaCMerr\n";
+    mytxt << "GV\tAlphaCM\tAlphaCMerr\n";
 
     string ionString = "N";
     if(target == Ion("Al27")){

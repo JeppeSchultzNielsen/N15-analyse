@@ -36,7 +36,7 @@ vector<vector<double>> findFactors(int runs, Ion target, string adresses[], int 
                 errors.push_back(result[3]);
             }
         }
-        auto result = factorFitter(gvs, peakPositions, errors, Ion(target), Ion("p"), to_string(factor));
+        auto result = factorFitter(gvs, peakPositions, errors, Ion(target), Ion("p"), Ion("p"), Ion(target), to_string(factor));
         factor = result[0];
         factors.push_back(factor);
         factorerrors.push_back(result[1]);

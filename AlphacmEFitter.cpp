@@ -34,22 +34,22 @@ double gauss(double *x, double *par){
     return result;
 }
 
+//løber igennem listen af pixels og returnerer true hvis pixelen er i listen
+tuple<bool,int> findPixel(UInt_t toSearch[10000][3], UInt_t FI, UInt_t BI, UInt_t id, int loopuntil){
+    for (int i = 0; i<loopuntil; i++){
+        if(toSearch[i][0] == FI && toSearch[i][1] == BI && toSearch[i][2] == id){
+            return make_tuple(true,i);
+        }
+    }
+    return make_tuple(false,-1);
+}
+
 TLorentzVector constructBeamVector(const Ion& beam,
                                    const Ion& targetIon,
                                    double beamEnergy) {
     TLorentzVector plbeam( TVector3(0,0,sqrt(2*beamEnergy*beam.getMass())), beamEnergy+beam.getMass() );
     TLorentzVector pltarget( TVector3(0,0,0), targetIon.getMass() );
     return plbeam + pltarget;
-}
-
-double findClosest(double value, double *array){
-    double result = array[0];
-    for( unsigned int a = 0; a < sizeof(array)/sizeof(array[0])+1; a = a + 1 ){
-        if(TMath::Abs(value - array[a]) < TMath::Abs(value - result)){
-            result = array[a];
-        }
-    }
-    return result;
 }
 
 vector<double> AlphacmEfitter(string in, double factor){
@@ -64,9 +64,16 @@ vector<double> AlphacmEfitter(string in, double factor){
     double_t cmE[100];
     double_t scatterAngle[100];
     UInt_t mul;
-    UInt_t id[100];
+    Short_t id[1000];
+    Short_t BI[1000];
+    Short_t FI[1000];
+    double_t solid[1000];
+    t->SetBranchAddress("id",id);
+    t->SetBranchAddress("BI",BI);
+    t->SetBranchAddress("FI",FI);
     t->SetBranchAddress("cmE",cmE);
     t->SetBranchAddress("mul",&mul);
+    t->SetBranchAddress("solidAngle",solid);
 
     auto entries = t->GetEntries();
 
@@ -81,14 +88,37 @@ vector<double> AlphacmEfitter(string in, double factor){
     double expectedE = (pow(cmEnergy,2)+pow(mHe,2) - pow(mC12,2))/(2*cmEnergy) - mHe;
     auto cmEHist = new TH1D(energyString.c_str(), energyString.c_str(), 2000, int(expectedE+0.5)-1000, int(expectedE+0.5)+999);
 
+    UInt_t pixelInfo[10000][3] = {};
+
+    int lastPrinted = 0;
+
+    double_t totalSolid = 0;
+
     for (Int_t i = 0; i < entries; i++) {
         t->GetEntry(i);
         //loop over alle hits i denne entry
         for (Int_t j = 0; j < mul; j++) {
             cmEHist -> Fill(cmE[j]);
+            short currentFI = 0;
+            short currentBI = 0;
+            short currentid = 0;
+            double currentSolid = 0;
+            currentFI += FI[j];
+            currentBI += BI[j];
+            currentid += id[j];
+            currentSolid += solid[j];
+            //se om denne pixel er en ny pixel
+            auto boolAndIndex = findPixel(pixelInfo, currentFI, currentBI, currentid, lastPrinted+1);
+            if(!get<0>(boolAndIndex)){
+                pixelInfo[lastPrinted][0] = currentFI;
+                pixelInfo[lastPrinted][1] = currentBI;
+                pixelInfo[lastPrinted][2] = currentid;
+                totalSolid += currentSolid;
+                //læg en til lastPrinted, så vi er klar til næste gang der er en ny vinkel
+                lastPrinted++;
+            }
         }
     }
-
     string histRoot = "alphaAccCalib/cmEhists/"+energyString +".root";
     TFile output(histRoot.c_str(), "RECREATE");
 
@@ -103,5 +133,5 @@ vector<double> AlphacmEfitter(string in, double factor){
     cmEHist -> Draw();
     l-> Draw();
     c1 -> Write();
-    return {energy,expectedE,fp ->Parameter(0), fp -> Error(0), fp ->Parameter(2), fp -> Error(2)};
+    return {energy,expectedE,fp ->Parameter(0), fp -> Error(0), fp ->Parameter(2), fp -> Error(2), totalSolid};
 }

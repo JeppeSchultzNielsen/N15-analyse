@@ -38,7 +38,10 @@ int main(int argc, char *argv[]) {
     vector<double> counts = {};
     vector<double> countErrors = {};
     vector<double> GV = {};
-    vector<double> Vcharge {};
+    vector<double> Vcharge = {};
+    vector<double> solidAngle = {};
+
+    i=2;
 
     for(int k = 0; k < i; k++){
         string targetStr = adresses[k].substr(0, 1);
@@ -47,13 +50,27 @@ int main(int argc, char *argv[]) {
 
         double factor = 1.16;
         if(targetStr == "N"){
-            //createFileN15(adresses[j], energyGV, factor, target);
+            cout << "h e" << endl;
+            createFileN15(adresses[k], energyGV, factor, Ion("N15"));
+            cout << "h e" << endl;
             auto result = AlphacmEfitter(adresses[k],factor);
             auto current = findCurrent(adresses[k]);
             GV.push_back(energyGV);
-            counts.push_back(result[5]);
-            countErrors.push_back(result[6]);
+            counts.push_back(result[4]);
+            countErrors.push_back(result[5]);
             Vcharge.push_back(current[0]);
+            solidAngle.push_back(result[6]);
+        }
+    }
+    string saveto = "Alpha0Cross.txt";
+    ofstream mytxt (saveto);
+    mytxt << "GV\tCounts\tCountErr\tVCharge\tSolidAngle\n";
+    //skriv til en txt
+    for(int k = 0; k < i; k++){
+        string targetStr = adresses[k].substr(0, 1);
+        if(targetStr == "N") {
+            mytxt << to_string(GV[k]) + "\t" + to_string(counts[k]) + "\t" + to_string(countErrors[k]) + "\t" +
+                     to_string(Vcharge[k]) + "\t" + to_string(solidAngle[k]) + "\n";
         }
     }
 }
