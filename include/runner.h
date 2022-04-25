@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 #include <ausa/eloss/Ion.h>
+#include <TLorentzVector.h>
 using namespace std;
 using namespace AUSA::EnergyLoss;
+using namespace ROOT;
 
 #ifndef ALUSCATTERING_RUNNER_H
 #define ALUSCATTERING_RUNNER_H
@@ -19,4 +21,8 @@ void createFileN15(string in, double energyGV, double factor, Ion targetIon);
 void createFileCutOff(string in, double energyGV, double factor, Ion targetIon);
 vector<double> AlphacmEfitter(string in, double factor);
 vector<double> findCurrent(string in);
+TLorentzVector constructBeamVector(const Ion& beam, const Ion& targetIon,double beamEnergy);
+tuple<bool,int> findPixel(UInt_t toSearch[10000][3], UInt_t FI, UInt_t BI, UInt_t id, int loopuntil);
+double gauss(double *x, double *par);
+void angularCross(string in);
 #endif //ALUSCATTERING_RUNNER_H

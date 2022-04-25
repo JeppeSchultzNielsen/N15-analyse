@@ -13,5 +13,5 @@ add_executable(AlphaAccCalib AlphaAccCalibRunner.cpp AlphaAccECorrector.cpp Alph
 target_link_libraries(AlphaAccCalib PRIVATE AUSA::AUSA)
 add_executable(AccCalibRunner AccCalibrationRunner.cpp calibrationEcorrector.cpp cmEgaussFitter.cpp factorFitter.cpp)
 target_link_libraries(AccCalibRunner PRIVATE AUSA::AUSA)
-add_executable(Alpha0Cross Alpha0crossRunner.cpp AlphacmEFitter.cpp VCHARGEfinder.cpp AlphaAccECorrector.cpp)
+add_executable(Alpha0Cross Alpha0crossRunner.cpp AlphacmEFitter.cpp VCHARGEfinder.cpp AlphaAccECorrector.cpp Alpha0AngularCross.cpp)
 target_link_libraries(Alpha0Cross PRIVATE AUSA::AUSA)

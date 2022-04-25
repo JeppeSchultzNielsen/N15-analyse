@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     vector<double> Vcharge = {};
     vector<double> solidAngle = {};
     vector<double> totalCount = {};
-
+    /*
     for(int k = 0; k < i; k++){
         string targetStr = adresses[k].substr(0, 1);
         double energyGV = stoi(regex_replace(adresses[k], regex(R"([\D])"), ""));
@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 
         double factor = 1.167;
         if(targetStr == "N"){
+            cout << adresses[k] << endl;
             //createFileN15(adresses[k], energyGV, factor, Ion("N15"));
             auto result = AlphacmEfitter(adresses[k],factor);
             auto current = findCurrent(adresses[k]);
@@ -66,10 +67,17 @@ int main(int argc, char *argv[]) {
     //skriv til en txt
     for(int k = 0; k < i; k++){
         string targetStr = adresses[k].substr(0, 1);
-        if(targetStr == "N") {
+        int energyGV = stoi(regex_replace(adresses[k], regex(R"([\D])"), ""));
+        if(targetStr == "N"){
             mytxt << to_string(GV[k]) + "\t" + to_string(counts[k]) + "\t" + to_string(countErrors[k]) + "\t" +
                      to_string(Vcharge[k]) + "\t" + to_string(solidAngle[k]) + "\t" + to_string(totalCount[k]) + "\n";
+            if(energyGV == 880 || energyGV == 1034){
+                angularCross(adresses[k]);
+            }
         }
     }
     mytxt.close();
+    */
+    cout << adresses[0] << endl;
+    angularCross(adresses[0]);
 }
