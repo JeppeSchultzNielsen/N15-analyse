@@ -98,7 +98,10 @@ vector<double> AlphacmEfitter(string in, double factor){
         t->GetEntry(i);
         //loop over alle hits i denne entry
         for (Int_t j = 0; j < mul; j++) {
-            cmEHist -> Fill(cmE[j]);
+            double_t currentEnergy = cmE[j];
+            if(currentEnergy < int(expectedE+0.5)+999 && currentEnergy > (int(expectedE+0.5)-1000)) {
+                cmEHist->Fill(currentEnergy);
+            }
             short currentFI = 0;
             short currentBI = 0;
             short currentid = 0;
@@ -127,11 +130,11 @@ vector<double> AlphacmEfitter(string in, double factor){
     TLine *l=new TLine(expectedE,0,expectedE,cmEHist -> GetMaximum());
     l->SetLineColor(kBlack);
 
-    TF1 *fit = new TF1("fit", gauss, expectedE-10, expectedE + 100, 3);
+    TF1 *fit = new TF1("fit", gauss, expectedE-20, expectedE + 100, 3);
     fit->SetParameters(expectedE,10,cmEHist->GetMaximum());
-    TFitResultPtr fp = cmEHist->Fit("fit","s && Q","",expectedE-10,expectedE + 200);
+    TFitResultPtr fp = cmEHist->Fit("fit","s && Q","",expectedE-20,expectedE + 200);
     cmEHist -> Draw();
     l-> Draw();
     c1 -> Write();
-    return {energy,expectedE,fp ->Parameter(0), fp -> Error(0), fp ->Parameter(2), fp -> Error(2), totalSolid};
+    return {energy,expectedE,fp ->Parameter(0), fp -> Error(0), fp ->Parameter(2), fp -> Error(2), totalSolid, cmEHist -> GetEntries()};
 }

@@ -32,13 +32,14 @@ vector<double> findCurrent(string in) {
     UInt_t vcharge;
     t ->SetBranchAddress("VCHARGE",&vcharge);
     UInt_t entries = t -> GetEntries();
-    t -> GetEntry(0);
 
-    UInt_t lowCharge = vcharge;
-    UInt_t highCharge = vcharge;
+    UInt_t lowCharge = 1000000000;
+    UInt_t highCharge = 0;
+
     for(int i = 0; i < entries; i++){
         t->GetEntry(i);
-        if(vcharge < lowCharge){
+        //kræver at vcharge er større end 100000 fordi nogle gange (uforklarligt) er vcharge lig 0.
+        if(vcharge < lowCharge && vcharge > 100000){
             lowCharge = vcharge;
         }
         if(vcharge > highCharge){
