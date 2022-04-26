@@ -78,6 +78,8 @@ int main(int argc, char *argv[]) {
     }
     mytxt.close();
     */
+    double energyGV = stoi(regex_replace(adresses[0], regex(R"([\D])"), ""));
+    //createFileN15(adresses[0], energyGV, 1.167, Ion("N15"));
     cout << adresses[0] << endl;
     angularCross(adresses[0]);
 }

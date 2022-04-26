@@ -57,10 +57,10 @@ void angularCross(string in){
     //skriv peak positioner til en .txt fil
 
     //Lav et array af histogrammer og vinkler på tilsvarende indekser
-    TH1D *histograms[1000] = {};
-    double_t solidangles[1000] = {};
-    double_t angles[1000] = {};
-    UInt_t pixelInfo[1000][3] = {};
+    TH1D *histograms[10000] = {};
+    double_t solidAngles[10000] = {};
+    double_t angles[10000] = {};
+    UInt_t pixelInfo[10000][3] = {};
 
     auto mHe = Ion("He4").getMass();
     auto mN15 = Ion("N15").getMass();
@@ -94,7 +94,7 @@ void angularCross(string in){
             currentid += id[j];
             currentE += E[j];
             currentSolid += solid[j];
-            auto boolAndIndex = findPixel(pixelInfo, currentFI, currentBI, currentid, lastPrinted);
+            auto boolAndIndex = findPixel(pixelInfo, currentFI, currentBI, currentid, lastPrinted+1);
             //case for hvis der endnu ikke findes et histogram for denne pixel.
             if (!get<0>(boolAndIndex) && currentE < int(expectedE+0.5)+999 && currentE > (int(expectedE+0.5)-1000)) {
                 //skab nyt histogram til at indeholde events ved denne vinkel
@@ -104,8 +104,9 @@ void angularCross(string in){
                 pixelInfo[lastPrinted][0] = currentFI;
                 pixelInfo[lastPrinted][1] = currentBI;
                 pixelInfo[lastPrinted][2] = currentid;
-                solidangles[lastPrinted] = currentSolid;
+                solidAngles[lastPrinted] = currentSolid;
                 angles[lastPrinted] = currentAngle;
+
                 //fyld energien ind i det skabte histogram
                 histograms[lastPrinted]->Fill(currentE);
                 //læg en til lastPrinted, så vi er klar til næste gang der er en ny vinkel
@@ -119,11 +120,15 @@ void angularCross(string in){
             }
         }
     }
+    for(int i = 0; i < lastPrinted; i++){
+        if()
+    }
 
     //lav en liste af de vinkler, vi har ramt med
     vector<int> uniqueAngles = {};
     TH1D *uniqueHistograms[10000];
     vector<double> uniqueSolids = {};
+
     int j = 0;
     for(int i = 0; i < lastPrinted; i++){
         int angleInt = int(angles[i] + 0.5);
@@ -139,20 +144,28 @@ void angularCross(string in){
         //case: der findes et histogram for denne vinkel. Læg pixelens solidangle til solidangle for denne vinkel.
         //læg histogrammerne sammen.
         if(found){
+            if(angleInt == 70){
+                cout << histograms[i] -> GetEntries() << endl;
+            }
             uniqueHistograms[k] -> Add(histograms[i]);
-            uniqueSolids[k] += solidangles[i];
+            uniqueSolids[k] += solidAngles[i];
         }
         //case: der findes ikke et histogram for denne vinkel. Lav et
         else{
+            if(angleInt == 70){
+                cout << histograms[i] -> GetEntries() << endl;
+            }
             string name = to_string(energy) + "angle" + to_string(angleInt);
             auto newhist = new TH1D(name.c_str(), name.c_str(), 2000, int(expectedE+0.5)-1000, int(expectedE+0.5)+999);
+            newhist -> Add(histograms[i]);
             uniqueHistograms[j] = newhist;
             j++;
             uniqueAngles.push_back(angleInt);
-            uniqueSolids.push_back(solidangles[i]);
+            uniqueSolids.push_back(solidAngles[i]);
         }
     }
 
+    cout << j << endl;
     //for hvert vinkelhistogram: fit og gem. Læg resultater ind i en .txt fil:
     string saveto = "angCross" + to_string(energy) +".txt";
     ofstream mytxt (saveto);
@@ -162,19 +175,18 @@ void angularCross(string in){
         string histRoot = "alphaAccCalib/uniqueAngleHists/"+ to_string(energy) + "angle" + to_string(uniqueAngles[i]) +".root";
         TFile output(histRoot.c_str(), "RECREATE");
         output.cd();
-        cout << uniqueAngles[i] << endl;
 
         auto cmEHist = uniqueHistograms[i];
         TCanvas *c1= new TCanvas;
         TLine *l=new TLine(expectedE,0,expectedE,cmEHist -> GetMaximum());
         l->SetLineColor(kBlack);
         TF1 *fit = new TF1("fit", gauss, expectedE-1000, expectedE + 1000, 3);
-        fit->SetParameters(expectedE,10,cmEHist->GetMaximum());
-        TFitResultPtr fp = cmEHist->Fit("fit","s && Q","",expectedE-1000,expectedE + 1000);
+        //fit->SetParameters(expectedE,10,cmEHist->GetMaximum());
+        //TFitResultPtr fp = cmEHist->Fit("fit","s && Q","",expectedE-1000,expectedE + 1000);
         cmEHist -> Draw();
         l-> Draw();
         c1 -> Write();
-        mytxt << to_string(uniqueAngles[i]) + "\t" + to_string(fp ->Parameter(2)) + "\t" + to_string(fp -> Error(2)) + "\t"
+        mytxt << to_string(uniqueAngles[i]) + "\t" + to_string(0) + "\t" + to_string(0) + "\t"
         + to_string(uniqueHistograms[i]->GetEntries()) + "\t" + to_string(uniqueSolids[i]) + "\t" + to_string(delta) + "\n";
     }
     mytxt.close();
