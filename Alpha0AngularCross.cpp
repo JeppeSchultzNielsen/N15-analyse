@@ -21,6 +21,7 @@
 #include <ausa/constants/Mass.h>
 #include <TCanvas.h>
 #include <TLine.h>
+#include <cmath>
 
 using namespace std;
 using namespace AUSA;
@@ -49,7 +50,7 @@ void angularCross(string in){
     t->SetBranchAddress("id",id);
     t->SetBranchAddress("BI",BI);
     t->SetBranchAddress("FI",FI);
-    t->SetBranchAddress("E",E);
+    t->SetBranchAddress("cmE",E);
     t->SetBranchAddress("scatterAngle",scatterAngle);
     t->SetBranchAddress("mul",&mul);
     auto entries = t->GetEntries();
@@ -71,7 +72,7 @@ void angularCross(string in){
     beamVector.Boost(-boostVector);
     auto cmEnergy = beamVector[3];
     double expectedE = (pow(cmEnergy,2)+pow(mHe,2) - pow(mC12,2))/(2*cmEnergy) - mHe;
-
+    long hej = 0;
     int lastPrinted = 0;
     for (Int_t i = 0; i < entries; i++) {
         //hent entry
@@ -87,16 +88,15 @@ void angularCross(string in){
             short currentid = 0;
             double currentE = 0;
             double currentSolid = 0;
-            vector<double_t> currentPos = {};
-            vector<double_t> currentDir = {};
             currentFI += FI[j];
             currentBI += BI[j];
             currentid += id[j];
             currentE += E[j];
             currentSolid += solid[j];
+            if(!(currentE > lround(expectedE) -1000) and currentE < (lround(expectedE)+999)){ hej++; continue;}
             auto boolAndIndex = findPixel(pixelInfo, currentFI, currentBI, currentid, lastPrinted+1);
             //case for hvis der endnu ikke findes et histogram for denne pixel.
-            if (!get<0>(boolAndIndex) && currentE < int(expectedE+0.5)+999 && currentE > (int(expectedE+0.5)-1000)) {
+            if (!get<0>(boolAndIndex)) {
                 //skab nyt histogram til at indeholde events ved denne vinkel
                 string name = "ID: " + to_string(currentid) + " FI: " + to_string(currentFI) + " BI: " +
                               to_string(currentBI) + " angle: " + to_string(currentAngle);
@@ -114,15 +114,11 @@ void angularCross(string in){
             }
             else {
                 //der fandtes allerede et histogram for dette pixel
-                if(currentE < int(expectedE+0.5)+999 && currentE > (int(expectedE+0.5)-1000)) {
-                    histograms[get<1>(boolAndIndex)]->Fill(currentE);
-                }
+                histograms[get<1>(boolAndIndex)]->Fill(currentE);
             }
         }
     }
-    for(int i = 0; i < lastPrinted; i++){
-        if()
-    }
+    cout << hej << endl;
 
     //lav en liste af de vinkler, vi har ramt med
     vector<int> uniqueAngles = {};
@@ -131,7 +127,7 @@ void angularCross(string in){
 
     int j = 0;
     for(int i = 0; i < lastPrinted; i++){
-        int angleInt = int(angles[i] + 0.5);
+        int angleInt = lround(angles[i]);
         bool found = false;
         int k = 0;
         for(auto angle : uniqueAngles){
@@ -144,17 +140,11 @@ void angularCross(string in){
         //case: der findes et histogram for denne vinkel. Læg pixelens solidangle til solidangle for denne vinkel.
         //læg histogrammerne sammen.
         if(found){
-            if(angleInt == 70){
-                cout << histograms[i] -> GetEntries() << endl;
-            }
             uniqueHistograms[k] -> Add(histograms[i]);
             uniqueSolids[k] += solidAngles[i];
         }
         //case: der findes ikke et histogram for denne vinkel. Lav et
         else{
-            if(angleInt == 70){
-                cout << histograms[i] -> GetEntries() << endl;
-            }
             string name = to_string(energy) + "angle" + to_string(angleInt);
             auto newhist = new TH1D(name.c_str(), name.c_str(), 2000, int(expectedE+0.5)-1000, int(expectedE+0.5)+999);
             newhist -> Add(histograms[i]);
@@ -165,12 +155,12 @@ void angularCross(string in){
         }
     }
 
-    cout << j << endl;
     //for hvert vinkelhistogram: fit og gem. Læg resultater ind i en .txt fil:
     string saveto = "angCross" + to_string(energy) +".txt";
     ofstream mytxt (saveto);
     mytxt << "Angle\tCounts\tCountErr\tDirectCounts\tSolidAngle\tVCharge\n";
 
+    double totalCounts = 0;
     for(int i = 0; i < uniqueAngles.size(); i++){
         string histRoot = "alphaAccCalib/uniqueAngleHists/"+ to_string(energy) + "angle" + to_string(uniqueAngles[i]) +".root";
         TFile output(histRoot.c_str(), "RECREATE");
@@ -188,6 +178,8 @@ void angularCross(string in){
         c1 -> Write();
         mytxt << to_string(uniqueAngles[i]) + "\t" + to_string(0) + "\t" + to_string(0) + "\t"
         + to_string(uniqueHistograms[i]->GetEntries()) + "\t" + to_string(uniqueSolids[i]) + "\t" + to_string(delta) + "\n";
+        totalCounts += uniqueHistograms[i]->GetEntries();
     }
+    cout << totalCounts << endl;
     mytxt.close();
 }
