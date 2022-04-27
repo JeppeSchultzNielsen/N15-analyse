@@ -72,7 +72,10 @@ void angularCross(string in){
     beamVector.Boost(-boostVector);
     auto cmEnergy = beamVector[3];
     double expectedE = (pow(cmEnergy,2)+pow(mHe,2) - pow(mC12,2))/(2*cmEnergy) - mHe;
-    long hej = 0;
+
+    double maxAngle = 0;
+    double minAngle = 180;
+
     int lastPrinted = 0;
     for (Int_t i = 0; i < entries; i++) {
         //hent entry
@@ -93,7 +96,19 @@ void angularCross(string in){
             currentid += id[j];
             currentE += E[j];
             currentSolid += solid[j];
-            if(!(currentE > lround(expectedE) -1000) and currentE < (lround(expectedE)+999)){ hej++; continue;}
+            //gider ikke events der er for lave til at være alpha0
+            if(!(currentE > lround(expectedE) -1000) and currentE < (lround(expectedE)+999)){continue;}
+            //gider ikke events, der sker i detektorkanter
+            if(currentid == 0 || currentid == 1){
+                if(currentFI >= 15 || currentFI <= 2 || currentBI <= 2 || currentBI >= 15){
+                    continue;
+                }
+            }
+            if(currentid ==  2){
+                if(currentBI == 1 || currentBI == 24){
+                    continue;
+                }
+            }
             auto boolAndIndex = findPixel(pixelInfo, currentFI, currentBI, currentid, lastPrinted+1);
             //case for hvis der endnu ikke findes et histogram for denne pixel.
             if (!get<0>(boolAndIndex)) {
@@ -111,6 +126,12 @@ void angularCross(string in){
                 histograms[lastPrinted]->Fill(currentE);
                 //læg en til lastPrinted, så vi er klar til næste gang der er en ny vinkel
                 lastPrinted++;
+                if(currentAngle > maxAngle){
+                    maxAngle = currentAngle;
+                }
+                if(currentAngle < minAngle){
+                    minAngle = currentAngle;
+                }
             }
             else {
                 //der fandtes allerede et histogram for dette pixel
@@ -118,41 +139,42 @@ void angularCross(string in){
             }
         }
     }
-    cout << hej << endl;
+    vector<int> uniqueAngles = {};
+    vector<double> uniqueSolids = {};
+    TH1D *uniqueHistograms[10000];
+    int k = 0;
+    for(int i = int(minAngle); i < maxAngle; i=i+5){
+        uniqueAngles.push_back(i);
+        string name = to_string(energy) + "angle" + to_string(int(minAngle)+i*5)+"+-2.5";
+        auto newhist = new TH1D(name.c_str(), name.c_str(), 2000, int(expectedE+0.5)-1000, int(expectedE+0.5)+999);
+        uniqueSolids.push_back(0);
+        uniqueHistograms[k] = newhist;
+        k++;
+    }
 
     //lav en liste af de vinkler, vi har ramt med
-    vector<int> uniqueAngles = {};
-    TH1D *uniqueHistograms[10000];
-    vector<double> uniqueSolids = {};
-
-    int j = 0;
     for(int i = 0; i < lastPrinted; i++){
-        int angleInt = lround(angles[i]);
-        bool found = false;
+        double angleInt = angles[i];
         int k = 0;
+        //hvis den er indenfor +-1.5 af de vinkler vi allerede har fundet, så
         for(auto angle : uniqueAngles){
-            if(angle == angleInt){
-                found = true;
+            //cout << angleInt << " og " << (angle-2.5) << "og" << (angle+2.5) << endl;
+            if(angleInt > (angle-2.5) and angleInt < (angle+2.5)){
+                uniqueHistograms[k]->Add(histograms[i]);
+                uniqueSolids[k] += solidAngles[i];
+                if(angle == 115){
+                    cout << "FI " << pixelInfo[i][0] << " BI " << pixelInfo[i][1] << " id " << pixelInfo[i][2] << endl;
+                }
                 break;
             }
             k++;
         }
         //case: der findes et histogram for denne vinkel. Læg pixelens solidangle til solidangle for denne vinkel.
         //læg histogrammerne sammen.
-        if(found){
-            uniqueHistograms[k] -> Add(histograms[i]);
-            uniqueSolids[k] += solidAngles[i];
-        }
-        //case: der findes ikke et histogram for denne vinkel. Lav et
-        else{
-            string name = to_string(energy) + "angle" + to_string(angleInt);
-            auto newhist = new TH1D(name.c_str(), name.c_str(), 2000, int(expectedE+0.5)-1000, int(expectedE+0.5)+999);
-            newhist -> Add(histograms[i]);
-            uniqueHistograms[j] = newhist;
-            j++;
-            uniqueAngles.push_back(angleInt);
-            uniqueSolids.push_back(solidAngles[i]);
-        }
+    }
+
+    for(int i = 0; i < uniqueAngles.size(); i++){
+        uniqueHistograms[i]->GetEntries();
     }
 
     //for hvert vinkelhistogram: fit og gem. Læg resultater ind i en .txt fil:
@@ -160,26 +182,28 @@ void angularCross(string in){
     ofstream mytxt (saveto);
     mytxt << "Angle\tCounts\tCountErr\tDirectCounts\tSolidAngle\tVCharge\n";
 
-    double totalCounts = 0;
-    for(int i = 0; i < uniqueAngles.size(); i++){
-        string histRoot = "alphaAccCalib/uniqueAngleHists/"+ to_string(energy) + "angle" + to_string(uniqueAngles[i]) +".root";
+    for(int i = 0; i < uniqueAngles.size(); i++) {
+        string histRoot =
+                "alphaAccCalib/uniqueAngleHists/" + to_string(energy) + "angle" + to_string(uniqueAngles[i]) + ".root";
         TFile output(histRoot.c_str(), "RECREATE");
         output.cd();
 
         auto cmEHist = uniqueHistograms[i];
-        TCanvas *c1= new TCanvas;
-        TLine *l=new TLine(expectedE,0,expectedE,cmEHist -> GetMaximum());
+        TCanvas *c1 = new TCanvas;
+        TLine *l = new TLine(expectedE, 0, expectedE, cmEHist->GetMaximum());
         l->SetLineColor(kBlack);
-        TF1 *fit = new TF1("fit", gauss, expectedE-1000, expectedE + 1000, 3);
-        //fit->SetParameters(expectedE,10,cmEHist->GetMaximum());
-        //TFitResultPtr fp = cmEHist->Fit("fit","s && Q","",expectedE-1000,expectedE + 1000);
-        cmEHist -> Draw();
-        l-> Draw();
-        c1 -> Write();
-        mytxt << to_string(uniqueAngles[i]) + "\t" + to_string(0) + "\t" + to_string(0) + "\t"
-        + to_string(uniqueHistograms[i]->GetEntries()) + "\t" + to_string(uniqueSolids[i]) + "\t" + to_string(delta) + "\n";
-        totalCounts += uniqueHistograms[i]->GetEntries();
+        if (cmEHist->GetEntries() > 0) {
+            TF1 *fit = new TF1("fit", gauss, expectedE - 1000, expectedE + 1000, 3);
+            fit->SetParameters(expectedE, 10, cmEHist->GetMaximum());
+            TFitResultPtr fp = cmEHist->Fit("fit", "s && Q && S", "", expectedE - 1000, expectedE + 1000);
+            cmEHist->Draw();
+            l->Draw();
+            c1->Write();
+            mytxt << to_string(uniqueAngles[i]) + "\t" + to_string(fp->Parameter(2)) + "\t" + to_string(fp->Error(2)) +
+                     "\t"
+                     + to_string(uniqueHistograms[i]->GetEntries()) + "\t" + to_string(uniqueSolids[i]) + "\t" +
+                     to_string(delta) + "\n";
+        }
     }
-    cout << totalCounts << endl;
     mytxt.close();
 }

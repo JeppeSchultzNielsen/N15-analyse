@@ -153,7 +153,7 @@ public:
                 // vi finder koordinatet i 3d-koordsystemet som svarer til pixelpositionen, der blev ramt her.
                 // vi kan så finde retningen (en vektor) for dette event. Dette tillader også, at vi kan finde
                 // vinkler.
-                auto position = o.detector().getUniformPixelPosition(FI, BI);
+                auto position = o.detector().getPixelPosition(FI, BI);
                 auto origin = target.getCenter();
                 hit.position = position;
                 auto direction = (position - origin).Unit();

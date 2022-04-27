@@ -15,3 +15,5 @@ add_executable(AccCalibRunner AccCalibrationRunner.cpp calibrationEcorrector.cpp
 target_link_libraries(AccCalibRunner PRIVATE AUSA::AUSA)
 add_executable(Alpha0Cross Alpha0crossRunner.cpp AlphacmEFitter.cpp VCHARGEfinder.cpp AlphaAccECorrector.cpp Alpha0AngularCross.cpp)
 target_link_libraries(Alpha0Cross PRIVATE AUSA::AUSA)
+add_executable(txt histToTxt.cpp)
+target_link_libraries(txt PRIVATE AUSA::AUSA)
