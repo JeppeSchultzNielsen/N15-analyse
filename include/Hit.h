@@ -6,7 +6,7 @@ struct Hit {
     double deposited;
     double paddeposited;
 
-    double E, FE, BE, Edssd, dE, EBeta, fbdiff, cmEnergy, cmEnergy2, angDiff, pCM;
+    double E, FE, BE, Edssd, dE, EBeta, fbdiff, cmEnergy, cmEnergy2, angDiff, timeDiff, pDiff, pCM, thickness;
     int mulindex;
 
     double TF, TB, TPad, T;

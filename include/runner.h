@@ -25,4 +25,5 @@ TLorentzVector constructBeamVector(const Ion& beam, const Ion& targetIon,double 
 tuple<bool,int> findPixel(UInt_t toSearch[10000][3], UInt_t FI, UInt_t BI, UInt_t id, int loopuntil);
 double gauss(double *x, double *par);
 void angularCross(string in);
+void createFileCoin(string in, double energyGV, double factor, Ion targetIon);
 #endif //ALUSCATTERING_RUNNER_H
