@@ -45,6 +45,7 @@ void angularCross(string in){
     Short_t FI[1000];
     Short_t id[1000];
     double_t solid[1000];
+    double_t cmang[1000];
     UInt_t mul;
     t->SetBranchAddress("solidAngle",solid);
     t->SetBranchAddress("id",id);
@@ -53,6 +54,7 @@ void angularCross(string in){
     t->SetBranchAddress("cmE",E);
     t->SetBranchAddress("scatterAngle",scatterAngle);
     t->SetBranchAddress("mul",&mul);
+    t->SetBranchAddress("cmAng",cmang);
     auto entries = t->GetEntries();
 
     //skriv peak positioner til en .txt fil
@@ -61,6 +63,7 @@ void angularCross(string in){
     TH1D *histograms[10000] = {};
     double_t solidAngles[10000] = {};
     double_t angles[10000] = {};
+    double_t CMangles[10000] = {};
     UInt_t pixelInfo[10000][3] = {};
 
     auto mHe = Ion("He4").getMass();
@@ -121,6 +124,7 @@ void angularCross(string in){
                 pixelInfo[lastPrinted][2] = currentid;
                 solidAngles[lastPrinted] = currentSolid;
                 angles[lastPrinted] = currentAngle;
+                CMangles[lastPrinted] = cmang[j];
 
                 //fyld energien ind i det skabte histogram
                 histograms[lastPrinted]->Fill(currentE);
@@ -141,6 +145,7 @@ void angularCross(string in){
     }
     vector<int> uniqueAngles = {};
     vector<double> uniqueSolids = {};
+    vector<double> uniqueCMAngles = {};
     TH1D *uniqueHistograms[10000];
     int k = 0;
     for(int i = int(minAngle); i < maxAngle; i=i+5){
@@ -148,6 +153,7 @@ void angularCross(string in){
         string name = to_string(energy) + "angle" + to_string(int(minAngle)+i*5)+"+-2.5";
         auto newhist = new TH1D(name.c_str(), name.c_str(), 2000, int(expectedE+0.5)-1000, int(expectedE+0.5)+999);
         uniqueSolids.push_back(0);
+        uniqueCMAngles.push_back(0);
         uniqueHistograms[k] = newhist;
         k++;
     }
@@ -162,6 +168,7 @@ void angularCross(string in){
             if(angleInt > (angle-2.5) and angleInt < (angle+2.5)){
                 uniqueHistograms[k]->Add(histograms[i]);
                 uniqueSolids[k] += solidAngles[i];
+                uniqueCMAngles[k] = CMangles[i];
                 if(angle == 115){
                     cout << "FI " << pixelInfo[i][0] << " BI " << pixelInfo[i][1] << " id " << pixelInfo[i][2] << endl;
                 }
@@ -180,7 +187,7 @@ void angularCross(string in){
     //for hvert vinkelhistogram: fit og gem. Læg resultater ind i en .txt fil:
     string saveto = "angCross" + to_string(energy) +".txt";
     ofstream mytxt (saveto);
-    mytxt << "Angle\tCounts\tCountErr\tDirectCounts\tSolidAngle\tVCharge\n";
+    mytxt << "Angle\tCounts\tCountErr\tDirectCounts\tSolidAngle\tVCharge\tCMangle\n";
 
     for(int i = 0; i < uniqueAngles.size(); i++) {
         string histRoot =
@@ -202,7 +209,7 @@ void angularCross(string in){
             mytxt << to_string(uniqueAngles[i]) + "\t" + to_string(fp->Parameter(2)) + "\t" + to_string(fp->Error(2)) +
                      "\t"
                      + to_string(uniqueHistograms[i]->GetEntries()) + "\t" + to_string(uniqueSolids[i]) + "\t" +
-                     to_string(delta) + "\n";
+                     to_string(delta) + "\t" + to_string(uniqueCMAngles[i]) + "\n";
         }
     }
     mytxt.close();

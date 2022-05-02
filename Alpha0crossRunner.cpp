@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
         double factor = 1.167;
         if(targetStr == "N"){
             cout << adresses[k] << endl;
-            //createFileN15(adresses[k], energyGV, factor, Ion("N15"));
+            createFileN15(adresses[k], energyGV, factor, Ion("N15"));
             auto result = AlphacmEfitter(adresses[k],factor);
             auto current = findCurrent(adresses[k]);
             GV.push_back(energyGV);

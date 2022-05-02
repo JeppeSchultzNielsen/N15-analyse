@@ -38,7 +38,7 @@ public:
     unique_ptr<DynamicBranchVector<double>> v_E, v_BE, v_FE, v_theta, v_dE, v_solang, v_cmE, v_cmE2;
     unique_ptr<DynamicBranchVector<short>> v_i;
     unique_ptr<DynamicBranchVector<short>> v_F, v_B;
-    unique_ptr<DynamicBranchVector<double>> v_ang, v_SAng;
+    unique_ptr<DynamicBranchVector<double>> v_ang, v_SAng, v_CMang;
     unique_ptr<DynamicBranchVector<double>> v_FT, v_BT;
 
     UInt_t mul{}, TPATTERN{}, TPROTONS{}, EGPS{};
@@ -76,6 +76,7 @@ public:
         v_FE = make_unique<DynamicBranchVector<double>>(*t, "FE", "mul");
 
         v_FT = make_unique<DynamicBranchVector<double>>(*t, "FT", "mul");
+        v_CMang = make_unique<DynamicBranchVector<double>>(*t, "cmAng", "mul");
         v_BT = make_unique<DynamicBranchVector<double>>(*t, "BT", "mul");
 
         v_dE = make_unique<DynamicBranchVector<double>>(*t, "dE", "mul");
@@ -225,6 +226,7 @@ public:
                 hit.lVector2 = {sqrt(2 * hit.E * ALPHA_MASS) * hit.direction, hit.E + ALPHA_MASS};
                 hit.lVector2.Boost(-1*beta2);
                 hit.cmEnergy2 = hit.lVector2[3] - ALPHA_MASS;
+                hit.cm_ang = beamDirection.Angle(hit.lVector.Vect());
 
                 //vedhæft dette hit til vores liste af hits.
                 hits.emplace_back(move(hit));
@@ -270,6 +272,7 @@ public:
             v_BT->add(hit.TB);
             v_cmE->add(hit.cmEnergy);
             v_cmE2->add(hit.cmEnergy2);
+            v_CMang->add(hit.cm_ang);
         }
     }
 
@@ -306,7 +309,7 @@ public:
                 *v_i, *v_FE, *v_BE,
                 *v_F, *v_B, *v_SAng,
                 *v_ang, *v_pos, *v_dir,
-                *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2, *v_solang
+                *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2, *v_solang, *v_CMang
         );
     }
 
