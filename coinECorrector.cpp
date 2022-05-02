@@ -291,6 +291,8 @@ public:
                 auto cmP = (alpha.lVector + c12.lVector).Vect().Mag();
                 auto angDiff = alpha.lVector.Vect().Angle(c12.lVector.Vect())*TMath::RadToDeg();
 
+                if(angDiff < 165 || cmP > 40000) continue;
+
                 if(hits.at(i).index == hits.at(j).index) continue;
 
                 v_alpha->add(1);

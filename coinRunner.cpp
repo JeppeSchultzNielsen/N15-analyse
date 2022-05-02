@@ -35,9 +35,9 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
     for(int k = 0; k < i; k++) {
-        if(adresses[k] == "N1034gvm.root"){
+        if(adresses[k] == "N1034gvm.root" || adresses[k] == "N1400gvm.root"){
             double energyGV = stoi(regex_replace(adresses[k], regex(R"([\D])"), ""));
-            createFileCoin(adresses[k], energyGV, 1.167, Ion("N15"));
+            createFileCoin(adresses[k], energyGV, 1.167, Ion("O18"));
         }
     }
 }
