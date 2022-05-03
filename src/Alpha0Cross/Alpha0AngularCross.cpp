@@ -88,7 +88,6 @@ void angularCross(string in){
             //hvis vi ikke har set denne vinkel før skal vi lave et nyt histogram for denne vinkel.
             double currentAngle = 0;
             currentAngle += scatterAngle[j];
-            //vi gider kun at bruge dem der er scatteret ved ca. 110 grader.
             short currentFI = 0;
             short currentBI = 0;
             short currentid = 0;

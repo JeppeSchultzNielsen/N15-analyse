@@ -272,7 +272,7 @@ public:
             v_BT->add(hit.TB);
             v_cmE->add(hit.cmEnergy);
             v_cmE2->add(hit.cmEnergy2);
-            v_CMang->add(hit.cm_ang);
+            v_CMang->add(hit.cm_ang * TMath::RadToDeg() );
         }
     }
 
