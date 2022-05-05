@@ -48,17 +48,16 @@ int main(int argc, char *argv[]) {
         string energyString = to_string(energyGV);
 
         double factor = 1.167;
-        if(targetStr == "N"){
-            cout << adresses[k] << endl;
-            createFileN15(adresses[k], energyGV, factor, Ion("N15"));
-            auto result = AlphacmEfitter(adresses[k],factor);
-            auto current = findCurrent(adresses[k]);
-            GV.push_back(energyGV);
-            counts.push_back(result[4]);
-            countErrors.push_back(result[5]);
-            Vcharge.push_back(current[0]);
-            solidAngle.push_back(result[6]);
-            totalCount.push_back(result[7]);
+        if(targetStr == "N" && (energyGV == 880 || energyGV == 1034)){
+                //createFileN15(adresses[k], energyGV, factor, Ion("N15"));
+                auto result = AlphacmEfitter(adresses[k], factor);
+                auto current = findCurrent(adresses[k]);
+                GV.push_back(energyGV);
+                counts.push_back(result[4]);
+                countErrors.push_back(result[5]);
+                Vcharge.push_back(current[0]);
+                solidAngle.push_back(result[6]);
+                totalCount.push_back(result[7]);
         }
     }
     string saveto = "Alpha0Cross.txt";
@@ -77,5 +76,4 @@ int main(int argc, char *argv[]) {
         }
     }
     mytxt.close();
-    angularCross(adresses[0]);
 }
