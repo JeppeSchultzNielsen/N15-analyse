@@ -26,4 +26,6 @@ tuple<bool,int> findPixel(UInt_t toSearch[10000][3], UInt_t FI, UInt_t BI, UInt_
 double gauss(double *x, double *par);
 void angularCross(string in);
 void createFileCoin(string in, double energyGV, double factor, Ion targetIon);
+void createFileCoin(string in, double energyGV, double factor, Ion targetIon, Ion recoilIon);
+void angularScatterCross(string in);
 #endif //ALUSCATTERING_RUNNER_H

@@ -17,3 +17,6 @@ add_executable(Alpha0Cross src/Alpha0Cross/Alpha0crossRunner.cpp src/AlphaAccCal
 target_link_libraries(Alpha0Cross PRIVATE AUSA::AUSA)
 add_executable(coinRun src/Coincidence/coinRunner.cpp src/Coincidence/coinECorrector.cpp)
 target_link_libraries(coinRun PRIVATE AUSA::AUSA)
+
+add_executable(scatterRun src/AccCalib/ScatterAngRunner.cpp src/AccCalib/ScatterAngularCross.cpp src/AccCalib/calibrationEcorrector.cpp src/VCHARGEfinder.cpp src/AlphaAccCalib/AlphacmEFitter.cpp)
+target_link_libraries(scatterRun PRIVATE AUSA::AUSA)

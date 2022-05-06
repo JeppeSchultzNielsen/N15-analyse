@@ -41,14 +41,14 @@ int main(int argc, char *argv[]) {
     vector<double> Vcharge = {};
     vector<double> solidAngle = {};
     vector<double> totalCount = {};
-
+/*
     for(int k = 0; k < i; k++){
         string targetStr = adresses[k].substr(0, 1);
         double energyGV = stoi(regex_replace(adresses[k], regex(R"([\D])"), ""));
         string energyString = to_string(energyGV);
 
         double factor = 1.167;
-        if(targetStr == "N" && (energyGV == 880 || energyGV == 1034)){
+        if(targetStr == "N"){
                 //createFileN15(adresses[k], energyGV, factor, Ion("N15"));
                 auto result = AlphacmEfitter(adresses[k], factor);
                 auto current = findCurrent(adresses[k]);
@@ -76,4 +76,7 @@ int main(int argc, char *argv[]) {
         }
     }
     mytxt.close();
+    */
+    createFileN15("N1gvm.root", 1, 1, Ion("N15"));
+    angularCross("N1gvm.root");
 }

@@ -1,7 +1,7 @@
 {
   "center" : {"x":"0mm", "y":"0mm", "z":"0mm"},
   "orientation" : {"x":"0mm", "y":"1mm", "z":"0mm"},
-  "normal" : {"x":"1mm", "y":"0mm", "z":"1mm"},
+  "normal" : {"x":"-1mm", "y":"0mm", "z":"1mm"},
   "transverseLength" : "10mm",
   "upLength" : "10mm",
  

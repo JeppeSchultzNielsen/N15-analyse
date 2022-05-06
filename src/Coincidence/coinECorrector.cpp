@@ -29,7 +29,7 @@ public:
     int NUM;
     TTree *t;
     unique_ptr<DynamicBranchVector<TVector3>> v_dir, v_pos;
-    unique_ptr<DynamicBranchVector<double>> v_E, v_BE, v_FE, v_theta, v_dE, v_solang, v_cmE, v_cmE2, v_angDiff, v_pCM, v_timeDiff;
+    unique_ptr<DynamicBranchVector<double>> v_E, v_BE, v_FE, v_theta, v_dE, v_solang, v_cmE, v_cmE2, v_angDiff, v_pCM, v_timeDiff, v_recoilE;
     unique_ptr<DynamicBranchVector<short>> v_i;
     unique_ptr<DynamicBranchVector<short>> v_F, v_B;
     unique_ptr<DynamicBranchVector<double>> v_ang, v_SAng;
@@ -53,10 +53,10 @@ public:
 
     //Constructor for analyseklassen. Vi initialiserer det TTree, som vi vil ende med at gemme alle vores ting i.
     //Der laves også nogle energitabsberegninger. Gad vide mon hvad de skal bruges til.
-    MyAnalysisCutOff(Target &target, TFile *output, double in, double factor, Ion targetIon) : target(target) {
+    MyAnalysisCutOff(Target &target, TFile *output, double in, double factor, Ion targetIon, Ion recoilIon) : target(target) {
         NUM = 0;
         accEnergy = in*factor;
-        c12_mass = Ion("C12").getMass();
+        c12_mass = recoilIon.getMass();
 
         t = new TTree("a", "a");
         t->Branch("mul", &mul);
@@ -68,6 +68,7 @@ public:
         v_angDiff = make_unique<DynamicBranchVector<double>>(*t, "angDiff", "mul");
         v_timeDiff = make_unique<DynamicBranchVector<double>>(*t, "timeDiff", "mul");
         v_pCM = make_unique<DynamicBranchVector<double>>(*t, "pCM", "mul");
+        v_recoilE = make_unique<DynamicBranchVector<double>>(*t, "recoilE", "mul");
         v_alpha = make_unique<DynamicBranchVector<short>>(*t, "canBeAlpha", "mul");
 
         v_theta = make_unique<DynamicBranchVector<double>>(*t, "theta", "mul");
@@ -103,10 +104,10 @@ public:
         //t->Branch("EGPS", &EGPS);
 
         SiCalc = defaultRangeInverter("He4", "Silicon");
-        SiCalcC12 = defaultRangeInverter("C12", "Silicon");
+        SiCalcC12 = defaultRangeInverter(recoilIon.getName(), "Silicon");
         for (auto &layer: target.getLayers()) {
             targetCalcs.push_back(defaultRangeInverter(Ion::predefined("He4"), layer.getMaterial()));
-            targetCalcsC12.push_back(defaultRangeInverter(Ion::predefined("C12"), layer.getMaterial()));
+            targetCalcsC12.push_back(defaultRangeInverter(Ion::predefined(recoilIon.getName()), layer.getMaterial()));
         }
     }
 
@@ -352,6 +353,9 @@ public:
                 v_pCM->add(cmP);
                 v_pCM->add(cmP);
 
+                v_recoilE->add(c12.cmEnergy);
+                v_recoilE->add(alpha.cmEnergy);
+
                 //jeg har lagt 2 elementer ind i træet; mul skal øges to gange.
                 mul++;
                 mul++;
@@ -390,7 +394,8 @@ public:
                 *v_i, *v_FE, *v_BE,
                 *v_F, *v_B, *v_SAng,
                 *v_ang, *v_pos, *v_dir,
-                *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2, *v_angDiff, *v_pCM, *v_alpha, *v_timeDiff
+                *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2, *v_angDiff, *v_pCM, *v_alpha, *v_timeDiff,
+                *v_recoilE
         );
     }
 
@@ -412,7 +417,7 @@ string to_string_with_precision(const T a_value, const int n = 6)
 }
 
 //essentielt main
-void createFileCoin(string in, double energyGV, double factor, Ion targetIon){
+void createFileCoin(string in, double energyGV, double factor, Ion targetIon, Ion recoilIon){
     //læs setup og target filer.
     string targetStr = in.substr(0,1);
 
@@ -430,7 +435,7 @@ void createFileCoin(string in, double energyGV, double factor, Ion targetIon){
     cout << "Printing to:  " << outfile << endl;
 
     TFile output(outfile, "RECREATE");
-    auto analysis = make_shared<MyAnalysisCutOff>(target, &output, energyGV, factor, targetIon);
+    auto analysis = make_shared<MyAnalysisCutOff>(target, &output, energyGV, factor, targetIon, recoilIon);
     reader.attach(analysis);
     reader.run();
 }
