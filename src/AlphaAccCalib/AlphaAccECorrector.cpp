@@ -50,13 +50,15 @@ public:
     Target &target;
     bool simulation = false;
     double accEnergy;
+    int GV;
     TVector3 beta;
     TVector3 beta2;
 
     //Constructor for analyseklassen. Vi initialiserer det TTree, som vi vil ende med at gemme alle vores ting i.
     //Der laves også nogle energitabsberegninger. Gad vide mon hvad de skal bruges til.
-    MyAnalysis(Target &target, TFile *output, double in, double factor, Ion targetIon) : target(target) {
+    MyAnalysis(Target &target, TFile *output, int in, double factor, Ion targetIon) : target(target) {
         NUM = 0;
+        GV = in;
         accEnergy = in*factor;
 
         t = new TTree("a", "a");
@@ -143,6 +145,9 @@ public:
                 auto eFDssd = fEnergy(o, j);
                 auto eBDssd = bEnergy(o, j);
                 auto eDssd = energy(o,j);
+                if(GV == 879 || GV == 771){
+                    eDssd = eBDssd;
+                }
                 //  auto ePad = p.energy(0);
 
                 // vi assigner de detektorsegments, eventet er sket i. Det gemmes også i hit.

@@ -303,7 +303,7 @@ public:
                 *v_i, *v_FE, *v_BE,
                 *v_F, *v_B, *v_SAng,
                 *v_ang, *v_pos, *v_dir,
-                *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2
+                *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2, *v_solang
         );
     }
 

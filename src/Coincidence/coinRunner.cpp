@@ -35,11 +35,26 @@ int main(int argc, char *argv[]) {
         perror("");
         return EXIT_FAILURE;
     }
+
+    vector<double> counts = {};
+    vector<double> countErrors = {};
+    vector<double> GV = {};
+    vector<double> Vcharge = {};
+    vector<double> solidAngle = {};
+    vector<double> totalCount = {};
     /*
     for(int k = 0; k < i; k++) {
         double energyGV = stoi(regex_replace(adresses[k], regex(R"([\D])"), ""));
-        createFileCoin(adresses[k], energyGV, 1.167, Ion("N15"));
+        createFileCoin(adresses[k], energyGV, 1.167, Ion("N15"), Ion("C12"));
+        auto result = AlphacmEfitterCoin(adresses[k], 1.167, 0);
+        auto current = findCurrent(adresses[k]);
+        GV.push_back(energyGV);
+        counts.push_back(result[4]);
+        countErrors.push_back(result[5]);
+        Vcharge.push_back(current[0]);
+        solidAngle.push_back(result[6]);
+        totalCount.push_back(result[7]);
     }*/
-
-    createFileCoin("N1400gvm.root", 1400, 1.167, Ion("O17"),Ion("N14"));
+    createFileCoin("N879gvm.root", 879, 1.167, Ion("N15"), Ion("C12"));
+    createFileCoin("N771gvm.root", 771, 1.167, Ion("N15"), Ion("C12"));
 }

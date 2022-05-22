@@ -47,6 +47,7 @@ public:
     Target &target;
     bool simulation = false;
     double accEnergy;
+    int GV;
     TVector3 beta;
     TVector3 beta2;
     double c12_mass;
@@ -55,6 +56,7 @@ public:
     //Der laves også nogle energitabsberegninger. Gad vide mon hvad de skal bruges til.
     MyAnalysisCutOff(Target &target, TFile *output, double in, double factor, Ion targetIon, Ion recoilIon) : target(target) {
         NUM = 0;
+        GV = in;
         accEnergy = in*factor;
         c12_mass = recoilIon.getMass();
 
@@ -151,6 +153,9 @@ public:
                 auto eFDssd = fEnergy(o, j);
                 auto eBDssd = bEnergy(o, j);
                 auto eDssd = energy(o,j);
+                if(GV == 879 || GV == 771){
+                    eDssd = eBDssd;
+                }
                 //  auto ePad = p.energy(0);
 
                 // vi assigner de detektorsegments, eventet er sket i. Det gemmes også i hit.
@@ -272,8 +277,8 @@ public:
                 }
 
                 //lav energikorrektion. Funktionen tager højde for om der er tale om en alpha eller c12.
-                alpha = correctEnergy(alpha);
-                c12 = correctEnergy(c12);
+                //alpha = correctEnergy(alpha);
+                //c12 = correctEnergy(c12);
 
                 //skab lorentzvektorer
                 alpha.lVector = {TMath::Sqrt((alpha.E + ALPHA_MASS)*(alpha.E + ALPHA_MASS) - ALPHA_MASS*ALPHA_MASS) * alpha.direction, alpha.E + ALPHA_MASS};
@@ -292,12 +297,12 @@ public:
                 auto cmP = (alpha.lVector + c12.lVector).Vect().Mag();
                 auto angDiff = alpha.lVector.Vect().Angle(c12.lVector.Vect())*TMath::RadToDeg();
 
-                if(angDiff < 165 || cmP > 40000) continue;
+                if(angDiff < 160 || cmP > 50000) continue;
 
                 if(hits.at(i).index == hits.at(j).index) continue;
 
-                v_alpha->add(1);
-                v_alpha->add(0);
+                v_alpha->add(1); //det første hit er alpha - tilføj 1 "true"
+                v_alpha->add(0); //det andet hit er rekylet
 
                 //nu kan jeg lægge værdierne ind i træet.
                 v_pos->add(alpha.position);
@@ -372,7 +377,6 @@ public:
         clear();
         findHits();
         doAnalysis();
-
         if (mul > 0) {t->Fill(); }
         hits.clear();
         NUM++;

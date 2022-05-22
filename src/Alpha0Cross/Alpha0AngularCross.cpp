@@ -98,13 +98,10 @@ void angularCross(string in){
             currentid += id[j];
             currentE += E[j];
             currentSolid += solid[j];
-            if(currentid != 2) continue;
-            if(currentE < 4000) continue;
-            /*
             //gider ikke events der er for lave til at være alpha0
             if(!(currentE > lround(expectedE) -300) and currentE < (lround(expectedE)+299)){continue;}
             //gider ikke events, der sker i detektorkanter
-            if(currentid == 0 || currentid == 1){
+            /*if(currentid == 0 || currentid == 1){
                 if(currentFI >= 15 || currentFI <= 2 || currentBI <= 2 || currentBI >= 15){
                     continue;
                 }
@@ -150,6 +147,9 @@ void angularCross(string in){
     vector<double> uniqueCMAngles = {};
     TH1D *uniqueHistograms[10000];
     int k = 0;
+
+    maxAngle = 180;
+    minAngle = 0;
 
     for(int i = int(minAngle); i < maxAngle; i=i+5){
         uniqueAngles.push_back(i);

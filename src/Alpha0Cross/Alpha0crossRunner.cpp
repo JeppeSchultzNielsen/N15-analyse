@@ -77,6 +77,6 @@ int main(int argc, char *argv[]) {
     }
     mytxt.close();
     */
-    createFileN15("N1gvm.root", 1, 1, Ion("N15"));
-    angularCross("N1gvm.root");
+    createFileN15("N880gvm.root", 879, 1.167, Ion("N15"));
+    angularCross("N880gvm.root");
 }

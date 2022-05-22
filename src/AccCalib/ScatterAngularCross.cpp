@@ -99,11 +99,9 @@ void angularScatterCross(string in){
             currentid += id[j];
             currentE += E[j];
             currentSolid += solid[j];
+            if(currentid == 1) continue;
             //gider ikke events der er for lave til at være alpha0
-            if(currentid == 1){
-                continue;
-            }
-            if(!(currentE > lround(expectedE) -200) and currentE < (lround(expectedE)+199)){continue;}
+            if(!(currentE > lround(expectedE) -300) and currentE < (lround(expectedE)+299)){continue;}
             //gider ikke events, der sker i detektorkanter
             /*
             if(currentid == 0 || currentid == 1){
@@ -129,6 +127,9 @@ void angularScatterCross(string in){
                 solidAngles[lastPrinted] = currentSolid;
                 angles[lastPrinted] = currentAngle;
 
+                if(currentBI == 7 && currentFI == 8 && currentid == 0) cout << currentSolid << endl;
+                if(currentBI == 7 && currentFI == 9 && currentid == 2) cout << currentSolid << endl;
+
                 //fyld energien ind i det skabte histogram
                 histograms[lastPrinted]->Fill(currentE);
                 //læg en til lastPrinted, så vi er klar til næste gang der er en ny vinkel
@@ -150,6 +151,10 @@ void angularScatterCross(string in){
     vector<double> uniqueSolids = {};
     TH1D *uniqueHistograms[10000];
     int k = 0;
+
+    maxAngle = 180;
+    minAngle = 0;
+    cout << lastPrinted << endl;
 
     for(int i = int(minAngle); i < maxAngle; i=i+5){
         uniqueAngles.push_back(i);
@@ -174,8 +179,6 @@ void angularScatterCross(string in){
             }
             k++;
         }
-        //case: der findes et histogram for denne vinkel. Læg pixelens solidangle til solidangle for denne vinkel.
-        //læg histogrammerne sammen.
     }
 
     //for hvert vinkelhistogram: fit og gem. Læg resultater ind i en .txt fil:

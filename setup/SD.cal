@@ -1,0 +1,76 @@
+# AUSAlib version: 17.1
+# Calibrator version: 2.0
+# Calibrator arguments: Calibrator --eloss --gui -d SD
+# Input files: 
+#	sd.root
+# Calibration of SD
+# Performed @ 2022-05-09 19:00
+# Performed by jeppe on jeppe-Lenovo-IdeaPad-S540-13API
+# Front
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+1067.6 10.5975
+-106.554 2.30507
+-129.279 2.57284
+-160.424 2.75024
+-190.635 2.64286
+-183.573 2.56794
+-218.375 2.59652
+-123.538 2.69883
+-347.65 4.0601
+-142.513 2.54557
+-181.966 2.6546
+-138.793 2.54877
+-201.691 2.69642
+-165.581 2.5835
+-130.775 2.50125
+-87.7216 2.65643
+-180.762 2.66724
+-174.414 2.53446
+-184.393 2.58616
+-207.47 2.76585
+-245.445 2.59419
+-126.626 2.55209
+-258.244 2.6801
+-177.291 2.78883
+-227.228 2.68417
+-191.781 2.44832
+-252.95 2.65171
+-217.1 2.69855
+-194.883 2.48042
+-191.53 2.58726
+# Back
+-201.911 2.47967
+-215.771 2.5478
+-243.88 2.48767
+-197.782 2.45861
+-229.026 2.49944
+-214.379 2.53566
+-285.547 2.69563
+-198.338 2.22528
+-295.762 2.58151
+-251.166 2.51571
+-310.775 2.51693
+-273.282 2.36038
+-374.056 2.50849
+-309.796 2.50755
+-334.178 2.44023
+-331.144 2.53553
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0
+# Slope or offset was either NaN or Inf and has been set to 0.0!
+0.0 0.0

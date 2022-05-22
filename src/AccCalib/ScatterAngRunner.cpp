@@ -33,6 +33,6 @@ int main(int argc, char *argv[]) {
         perror("");
         return EXIT_FAILURE;
     }
-    //createFile("N880gvm.root",880,1.167,Ion("N15"));
-    angularScatterCross("N880gvm.root");
+    createFile("N878gvm.root",878,1.167,Ion("N15"));
+    angularScatterCross("N878gvm.root");
 }
