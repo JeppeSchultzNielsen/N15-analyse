@@ -23,7 +23,7 @@ struct Hit {
     short fseg, bseg;
     std::vector<ParticleType> type;
     bool canBeAlpha;
-    bool canBeBeta;
+    bool canBeCascade;
     size_t index;
 
     TLorentzVector lVector, lVectorBeta, lVectorAlpha, lVector2;

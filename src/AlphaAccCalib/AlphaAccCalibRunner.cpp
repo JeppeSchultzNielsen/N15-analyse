@@ -12,7 +12,7 @@ using namespace std;
 
 
 vector<vector<double>> findFactors(int runs, Ion target, string adresses[], int noAdresses){
-    double factor = 1.16035;
+    double factor = 1.169;
     vector<double> peakPositions = {};
     vector<double> gvs = {};
     vector<double> factors = {};
@@ -34,7 +34,7 @@ vector<vector<double>> findFactors(int runs, Ion target, string adresses[], int 
             double energyGV = stoi(regex_replace(adresses[j], regex(R"([\D])"), ""));
             string energyString = to_string(energyGV);
             //der er nærmest ingen counts i 1710 runnet.
-            if(energyGV == 1710) continue;
+            if(energyGV == 1710 || energyGV == 879 || energyGV == 771 ) continue;
             if (targetStr == ionString) {
                 createFileN15(adresses[j], energyGV, factor, target);
                 auto result = AlphacmEfitter(adresses[j], factor);

@@ -42,19 +42,13 @@ int main(int argc, char *argv[]) {
     vector<double> Vcharge = {};
     vector<double> solidAngle = {};
     vector<double> totalCount = {};
-    /*
+
     for(int k = 0; k < i; k++) {
         double energyGV = stoi(regex_replace(adresses[k], regex(R"([\D])"), ""));
-        createFileCoin(adresses[k], energyGV, 1.167, Ion("N15"), Ion("C12"));
-        auto result = AlphacmEfitterCoin(adresses[k], 1.167, 0);
-        auto current = findCurrent(adresses[k]);
-        GV.push_back(energyGV);
-        counts.push_back(result[4]);
-        countErrors.push_back(result[5]);
-        Vcharge.push_back(current[0]);
-        solidAngle.push_back(result[6]);
-        totalCount.push_back(result[7]);
-    }*/
-    createFileCoin("N879gvm.root", 879, 1.167, Ion("N15"), Ion("C12"));
-    createFileCoin("N771gvm.root", 771, 1.167, Ion("N15"), Ion("C12"));
+        if(energyGV == 771 || energyGV == 835 || energyGV == 950 || energyGV == 1710 || energyGV == 1045 || energyGV == 920 || energyGV == 860 || energyGV == 880 ||
+                energyGV == 898 ||energyGV == 2564 ||energyGV == 1000 ||energyGV == 1055 || energyGV == 975 ||energyGV == 1034 || energyGV == 2460 || energyGV == 1400) continue;
+        createFileCoin(adresses[k], energyGV, 1.169, Ion("N15"), Ion("C12"));
+        angularCascade(adresses[k]);
+    }
+    //createFileCoin("N1045gvm.root", 1045, 1.169, Ion("N15"), Ion("C12"));
 }

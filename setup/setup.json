@@ -7,7 +7,7 @@
       "calibration" : "Det1.cal",
       "reverseFront" : true,
       "reverseBack" : true,
-      "position" : {"x":"38.5 mm", "y":"1.78 mm", "z":"0.3 mm"},
+      "position" : {"x":"36.5 mm", "y":"1.78 mm", "z":"0.3 mm"},
       "normal" : {"x":"-1 mm", "y":"0 mm", "z":"0 mm"},
       "orientation" : {"x":"0 mm", "y":"-1 mm", "z":"0 mm"},
       "frontMapping" : {
@@ -31,7 +31,7 @@
       "calibration" : "Det2.cal",
       "reverseFront" : true,
       "reverseBack" : true,
-      "position" : {"x":"-38.2 mm", "y":"2.4 mm", "z":"-0.9 mm"},
+      "position" : {"x":"-36.2 mm", "y":"2.4 mm", "z":"-0.9 mm"},
       "normal" : {"x":"1 mm", "y":"0 mm", "z":"0 mm"},
       "orientation" : {"x":"0 mm", "y":"-1 mm", "z":"0 mm"},
       "frontMapping" : {

@@ -30,11 +30,11 @@ public:
     TTree *t;
     unique_ptr<DynamicBranchVector<TVector3>> v_dir, v_pos;
     unique_ptr<DynamicBranchVector<double>> v_E, v_BE, v_FE, v_theta, v_dE, v_solang, v_cmE, v_cmE2, v_angDiff, v_pCM, v_timeDiff, v_recoilE;
-    unique_ptr<DynamicBranchVector<short>> v_i;
+    unique_ptr<DynamicBranchVector<short>> v_i, v_orgmul;
     unique_ptr<DynamicBranchVector<short>> v_F, v_B;
     unique_ptr<DynamicBranchVector<double>> v_ang, v_SAng;
     unique_ptr<DynamicBranchVector<double>> v_FT, v_BT;
-    unique_ptr<DynamicBranchVector<short>> v_alpha;
+    unique_ptr<DynamicBranchVector<short>> v_alpha, v_cascade;
 
     UInt_t mul{}, TPATTERN{}, TPROTONS{}, EGPS{};
     vector<Hit> hits;
@@ -51,6 +51,16 @@ public:
     TVector3 beta;
     TVector3 beta2;
     double c12_mass;
+    double expectedE0;
+    double expectedE1;
+    double expectedE0recoil;
+    double expectedE1recoil;
+    double upperA;
+    double upperB;
+    double lowerA;
+    double lowerB;
+    double lowerLim;
+    double upperLim;
 
     //Constructor for analyseklassen. Vi initialiserer det TTree, som vi vil ende med at gemme alle vores ting i.
     //Der laves også nogle energitabsberegninger. Gad vide mon hvad de skal bruges til.
@@ -72,6 +82,7 @@ public:
         v_pCM = make_unique<DynamicBranchVector<double>>(*t, "pCM", "mul");
         v_recoilE = make_unique<DynamicBranchVector<double>>(*t, "recoilE", "mul");
         v_alpha = make_unique<DynamicBranchVector<short>>(*t, "canBeAlpha", "mul");
+        v_cascade = make_unique<DynamicBranchVector<short>>(*t, "canBeCascade", "mul");
 
         v_theta = make_unique<DynamicBranchVector<double>>(*t, "theta", "mul");
         v_ang = make_unique<DynamicBranchVector<double>>(*t, "angle", "mul");
@@ -90,6 +101,7 @@ public:
         v_i = make_unique<DynamicBranchVector<short>>(*t, "id", "mul");
 
         v_F = make_unique<DynamicBranchVector<short>>(*t, "FI", "mul");
+        v_orgmul = make_unique<DynamicBranchVector<short>>(*t, "orgmul", "mul");
         v_B = make_unique<DynamicBranchVector<short>>(*t, "BI", "mul");
 
         v_cmE = make_unique<DynamicBranchVector<double>>(*t, "cmE", "mul");
@@ -111,6 +123,32 @@ public:
             targetCalcs.push_back(defaultRangeInverter(Ion::predefined("He4"), layer.getMaterial()));
             targetCalcsC12.push_back(defaultRangeInverter(Ion::predefined(recoilIon.getName()), layer.getMaterial()));
         }
+
+        //beregn forventet CM energier af alphaer:
+        double energy = GV * 1.169;
+        double mHe = Ion("He4").getMass();
+        double mC12 = Ion("C12").getMass();
+        double mN15 = Ion("N15").getMass();
+        auto beamVector = constructBeamVector(Ion("H1"),Ion("N15"),energy);
+        auto boostVector = TMath::Sqrt((energy+PROTON_MASS)*(energy+PROTON_MASS)-PROTON_MASS*PROTON_MASS)/(energy+PROTON_MASS + mN15) * TVector3(0,0,1);
+        beamVector.Boost(-boostVector);
+        auto cmEnergy = beamVector[3];
+        expectedE0 = (pow(cmEnergy,2)+pow(mHe,2) - pow(mC12,2))/(2*cmEnergy) - mHe;
+        expectedE1 = (pow(cmEnergy,2)+pow(mHe,2) - pow(mC12+4439,2))/(2*cmEnergy) - mHe;
+        expectedE0recoil = (pow(cmEnergy,2)-pow(mHe,2) + pow(mC12,2))/(2*cmEnergy) - mC12;
+        expectedE1recoil = (pow(cmEnergy,2)-pow(mHe,2) + pow(mC12+4439,2))/(2*cmEnergy) - (mC12+4439);
+
+        lowerLim = expectedE1 + 400;
+        upperLim = expectedE0 - 1000;
+
+        upperA = (upperLim - lowerLim)/(0.7*expectedE0recoil-100 - (1.25*expectedE1recoil-100));
+        lowerA = (upperLim - lowerLim)/(0.7*expectedE0recoil+100 - (1.25*expectedE1recoil+100));
+        upperB = upperLim - upperA * (0.7*expectedE0recoil-100);
+        lowerB = upperLim - lowerA * (0.7*expectedE0recoil+100);
+        cout << upperA << endl;
+        cout << upperB << endl;
+        cout << lowerA << endl;
+        cout << lowerB << endl;
     }
 
     //Setup bliver kørt som det første under run(). Først kaldes setup funktionen fra den abstrakte analyse klasse.
@@ -181,17 +219,11 @@ public:
                 auto scatterAngle = hit.direction.Angle(beamDirection);
                 hit.scatterAngle = scatterAngle;
 
-
-                //assign de tider, hittet er sket i.
-                if (!simulation) {
-                    hit.TF = fTime(o, j);
-                    hit.TB = bTime(o, j);
-                    //    hit.TPad = p.time(0);
-                } else {
-                    hit.TF = 42;
-                    hit.TB = 42;
-                    //  hit.TPad = 42;
-                }
+                hit.TF = fTime(o, j);
+                /*if(hit.TF == 0){
+                    hit.TF = 13.92*1e6;
+                }*/
+                hit.TB = bTime(o, j);
 
                 // angle er vinklen mellem detektorens normalvektor og retningen, partiklen kommer ind i. Denne
                 // vinkel kan så bruges til at udregne hvor lang en rejse, partiklen har gennem dødlaget på detektoren
@@ -249,6 +281,14 @@ public:
         return hit;
     }
 
+    short cascadeDeterminer(double cmEnergy, double recoilEnergy){
+        if(cmEnergy < lowerLim) return 0;
+        if(cmEnergy > upperLim) return 0;
+        if(upperA*recoilEnergy + upperB < cmEnergy) return 0;
+        if(lowerA*recoilEnergy + lowerB > cmEnergy) return 0;
+        return 1;
+    }
+
     //hjælpefunktion til Analyze. Bliver kørt efter findhits.
     void doAnalysis() {
         mul = 0;
@@ -275,10 +315,28 @@ public:
                     alpha.canBeAlpha = true;
                     c12.canBeAlpha = false;
                 }
+                if(alpha.index == 2) continue;
+                if(c12.index == 2) continue;
+                if(alpha.index == 3) continue;
+                if(c12.index == 3) continue;
+
+                //for disse virker bagstrip 13 ikke på detektor 1.
+                if((GV == 771 || GV == 879) && alpha.index == 0 && alpha.bseg == 13) continue;
+                if((GV == 771 || GV == 879) && c12.index == 0 && c12.bseg == 13) continue;
+                if(!(GV == 771 || GV == 879)){
+                    if(alpha.index == 0 && alpha.fseg > 9) continue;
+                    if(alpha.index == 1 && alpha.fseg < 4) continue;
+                    if(alpha.index == 1 && alpha.fseg > 12) continue;
+                    if(alpha.index == 2 && alpha.fseg == 1) continue;
+                    if(c12.index == 0 && c12.fseg > 9) continue;
+                    if(c12.index == 1 && c12.fseg < 4) continue;
+                    if(c12.index == 1 && c12.fseg > 12) continue;
+                    if(c12.index == 2 && c12.fseg == 1) continue;
+                }
 
                 //lav energikorrektion. Funktionen tager højde for om der er tale om en alpha eller c12.
-                //alpha = correctEnergy(alpha);
-                //c12 = correctEnergy(c12);
+                alpha = correctEnergy(alpha);
+                c12 = correctEnergy(c12);
 
                 //skab lorentzvektorer
                 alpha.lVector = {TMath::Sqrt((alpha.E + ALPHA_MASS)*(alpha.E + ALPHA_MASS) - ALPHA_MASS*ALPHA_MASS) * alpha.direction, alpha.E + ALPHA_MASS};
@@ -298,11 +356,24 @@ public:
                 auto angDiff = alpha.lVector.Vect().Angle(c12.lVector.Vect())*TMath::RadToDeg();
 
                 if(angDiff < 160 || cmP > 50000) continue;
+                short canBeCascade = cascadeDeterminer(alpha.cmEnergy, c12.cmEnergy);
+                /*
+                if(canBeCascade == 1){
+                    cout << "-----------" << endl;
+                    for(auto hit : hits){
+                        cout << "en" << hit.E << "FT" << hit.TF << "id" << hit.index << "FI" << hit.fseg << "BI" << hit.bseg << endl;
+                    }
+                    cout << "-----------" << endl;
+                }*/
 
-                if(hits.at(i).index == hits.at(j).index) continue;
+                v_orgmul->add(hits.size());
+                v_orgmul->add(hits.size());
 
                 v_alpha->add(1); //det første hit er alpha - tilføj 1 "true"
                 v_alpha->add(0); //det andet hit er rekylet
+
+                v_cascade -> add(canBeCascade); //det første hit er alpha - har også mulighed for at være en cascade
+                v_cascade -> add(0); //det andet hit er altid rekylet
 
                 //nu kan jeg lægge værdierne ind i træet.
                 v_pos->add(alpha.position);
@@ -399,7 +470,7 @@ public:
                 *v_F, *v_B, *v_SAng,
                 *v_ang, *v_pos, *v_dir,
                 *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2, *v_angDiff, *v_pCM, *v_alpha, *v_timeDiff,
-                *v_recoilE
+                *v_recoilE, *v_cascade, *v_solang, *v_orgmul
         );
     }
 

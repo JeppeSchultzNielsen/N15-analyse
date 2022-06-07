@@ -29,4 +29,7 @@ void createFileCoin(string in, double energyGV, double factor, Ion targetIon, Io
 void angularScatterCross(string in);
 vector<double> AlphacmEfitterCoin(string in, double factor, double gammaLoss);
 void fixFile(string gvString, UInt_t startClock);
+void angularAlpha1Cross(string in);
+void cascadeFraction(string in);
+void angularCascade(string in);
 #endif //ALUSCATTERING_RUNNER_H

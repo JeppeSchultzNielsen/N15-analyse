@@ -32,6 +32,7 @@ using namespace ROOT;
 
 void angularCross(string in){
     auto delta = findCurrent(in)[0];
+    int GV = stoi(regex_replace(in, regex(R"([\D])"), ""));
     int energy = stoi(regex_replace(in, regex(R"([\D])"), "")) * 1.167;
     //skab en pointer til root-filen der er blevet lavet af analyse.
     string analyzed = "analyzed/N"+regex_replace(in, regex(R"([\D])"), "") + "gv.root";
@@ -100,17 +101,11 @@ void angularCross(string in){
             currentSolid += solid[j];
             //gider ikke events der er for lave til at være alpha0
             if(!(currentE > lround(expectedE) -300) and currentE < (lround(expectedE)+299)){continue;}
-            //gider ikke events, der sker i detektorkanter
-            /*if(currentid == 0 || currentid == 1){
-                if(currentFI >= 15 || currentFI <= 2 || currentBI <= 2 || currentBI >= 15){
-                    continue;
-                }
-            }
-            if(currentid ==  2) {
-                if (currentBI == 1 || currentBI == 24) {
-                    continue;
-                }
-            }*/
+            //gider ikke events, der sker i dårlige strips
+            if(currentid == 0 && currentFI > 9) continue;
+            if(currentid == 1 && currentFI < 4) continue;
+            if(currentid == 1 && currentFI > 12) continue;
+            if(currentid == 2 && currentBI == 1) continue;
             auto boolAndIndex = findPixel(pixelInfo, currentFI, currentBI, currentid, lastPrinted+1);
             //case for hvis der endnu ikke findes et histogram for denne pixel.
             if (!get<0>(boolAndIndex)) {
@@ -148,9 +143,6 @@ void angularCross(string in){
     TH1D *uniqueHistograms[10000];
     int k = 0;
 
-    maxAngle = 180;
-    minAngle = 0;
-
     for(int i = int(minAngle); i < maxAngle; i=i+5){
         uniqueAngles.push_back(i);
         string name = to_string(energy) + "angle" + to_string(int(minAngle)+i*5)+"+-2.5";
@@ -172,6 +164,9 @@ void angularCross(string in){
                 uniqueHistograms[k]->Add(histograms[i]);
                 uniqueSolids[k] += solidAngles[i];
                 uniqueCMAngles[k] = CMangles[i];
+                if(angle == 155){
+                    cout << "BI" << pixelInfo[i][1] << "FI" << pixelInfo[i][0] << "counts" << histograms[i] -> GetEntries() << endl;
+                }
                 break;
             }
             k++;
@@ -181,7 +176,7 @@ void angularCross(string in){
     }
 
     //for hvert vinkelhistogram: fit og gem. Læg resultater ind i en .txt fil:
-    string saveto = "angCross" + to_string(energy) +".txt";
+    string saveto = "AngCross/angCross" + to_string(GV) +".txt";
     ofstream mytxt (saveto);
     mytxt << "Angle\tCounts\tCountErr\tDirectCounts\tSolidAngle\tVCharge\tCMangle\n";
 

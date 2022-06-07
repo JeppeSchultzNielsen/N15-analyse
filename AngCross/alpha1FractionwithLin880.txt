@@ -1,0 +1,2 @@
+Alpha0s	CAlpha0serror	Alpha1counts
+63.145763	0.276218	56640.000000

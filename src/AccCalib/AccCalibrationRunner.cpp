@@ -42,7 +42,7 @@ vector<vector<double>> findFactors(int runs, Ion target, string adresses[], int 
         factorerrors.push_back(result[1]);
     }
     return {factors,factorerrors};
-}AccCalib
+}
 
 int main(int argc, char *argv[]){
     //det her stykke kode er copy pastet herfra
