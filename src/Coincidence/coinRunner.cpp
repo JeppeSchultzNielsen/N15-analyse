@@ -42,13 +42,13 @@ int main(int argc, char *argv[]) {
     vector<double> Vcharge = {};
     vector<double> solidAngle = {};
     vector<double> totalCount = {};
-
+/*
     for(int k = 0; k < i; k++) {
         double energyGV = stoi(regex_replace(adresses[k], regex(R"([\D])"), ""));
         if(energyGV == 771 || energyGV == 835 || energyGV == 950 || energyGV == 1710 || energyGV == 1045 || energyGV == 920 || energyGV == 860 || energyGV == 880 ||
                 energyGV == 898 ||energyGV == 2564 ||energyGV == 1000 ||energyGV == 1055 || energyGV == 975 ||energyGV == 1034 || energyGV == 2460 || energyGV == 1400) continue;
         createFileCoin(adresses[k], energyGV, 1.169, Ion("N15"), Ion("C12"));
         angularCascade(adresses[k]);
-    }
-    //createFileCoin("N1045gvm.root", 1045, 1.169, Ion("N15"), Ion("C12"));
+    }*/
+    createFileCoin("N771gvm.root", 771, 1.169, Ion("N15"), Ion("C12"));
 }

@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
             }
         }*/
     }
-    createFileN15("N879gvm.root", 879, 1.169, Ion("N15"));
+    createFileN15("N771gvm.root", 771, 1.169, Ion("N15"));
     mytxt.close();
     //createFileN15("N879gvm.root", 879, 1.169, Ion("N15"));
     //createFileN15("N880gvm.root", 880, 1.169, Ion("N15"));

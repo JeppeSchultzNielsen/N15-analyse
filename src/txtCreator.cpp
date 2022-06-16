@@ -40,6 +40,7 @@ void txtCreator(int GV){
     double_t scatterAngle[1000];
     Short_t BI[1000];
     Short_t FI[1000];
+    Short_t orgmul[1000];
     double_t BT[1000];
     double_t FT[1000];
     Short_t canBeAlpha[1000];
@@ -66,13 +67,14 @@ void txtCreator(int GV){
     t->SetBranchAddress("cmE",E); // OOOBBBBSSS SKAL VÆRE CME
     t->SetBranchAddress("scatterAngle",scatterAngle);
     t->SetBranchAddress("mul",&mul);
+    t->SetBranchAddress("orgmul",orgmul);
     auto entries = t->GetEntries();
     cout << entries << endl;
 
     long t0count = 0;
     long tAllcount = 0;
     //skriv events til en .txt fil
-    string saveto = "txts/noFT0events"+ to_string(GV)+".txt";
+    string saveto = "txts/tail"+ to_string(GV)+".txt";
     ofstream mytxt (saveto);
     for (Int_t i = 0; i < entries-10; i++) {
         //hent entry
@@ -96,22 +98,21 @@ void txtCreator(int GV){
             short currentCanBeAlpha = canBeAlpha[j];
             double currentFT = FT[j];
             double currentBT = BT[j];
+            short currentorgmul = orgmul[j];
             short currentCanBeCascade = canBeCascade[j];
-            if(currentFT == 0 || currentBT == 0){
-                t0count++;
+            if(currentCanBeAlpha == 1){
+                mytxt << currentpCM << "\t" << currentE << "\t" << currentRecoil << "\n";
             }
-            tAllcount ++;
         }
     }
-    mytxt << t0count << "\t" << tAllcount;
     mytxt.close();
 }
 
 int main(int argc, char *argv[]) {
-    /*
+/*
     vector<short> GVs = {813,771,879,835,860,880,898,920,950,975,1000,1034,1045,1055};
     for(auto gv : GVs){
         txtCreator(gv);
     }*/
-    txtCreator(879);
+    txtCreator(771);
 }

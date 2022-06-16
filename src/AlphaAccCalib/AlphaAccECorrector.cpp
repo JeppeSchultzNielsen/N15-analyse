@@ -124,7 +124,7 @@ public:
     //Hjælpefunktion til analyze (analyze bliver kørt for hvert event i output)
     void findHits() {
         //Vi looper over alle detektorene
-        for (size_t i = 0; i < output.dssdCount(); i++) {
+        for (size_t i = 0; i < 3; i++) {//output.dssdCount()
             //Hent outputs fra hver detektor. Find også multipliciteten i detektoren for det pågældende event?
             auto &o = output.getDssdOutput(i);
             //auto &p = output.getSingleOutput(i);
@@ -223,14 +223,15 @@ public:
 
                 //assign detektorindekset til hittet. Der laves også en Lorentz-vektor, ligner godt nok, at vi
                 //antager, at det er alpha-partikler - skal nok ændres hvis det skal bruges.
+
                 hit.index = i;
                 hit.lVector = {TMath::Sqrt((hit.E + ALPHA_MASS)*(hit.E + ALPHA_MASS) - ALPHA_MASS*ALPHA_MASS) * hit.direction, hit.E + ALPHA_MASS};
                 hit.lVector.Boost(-1*beta);
                 hit.cmEnergy = hit.lVector[3] - ALPHA_MASS;
 
-                hit.lVector2 = {sqrt(2 * hit.E * ALPHA_MASS) * hit.direction, hit.E + ALPHA_MASS};
+                hit.lVector2 = {sqrt(2 * hit.E * PROTON_MASS) * hit.direction, hit.E + PROTON_MASS};
                 hit.lVector2.Boost(-1*beta2);
-                hit.cmEnergy2 = hit.lVector2[3] - ALPHA_MASS;
+                hit.cmEnergy2 = hit.lVector2[3] - PROTON_MASS;
                 hit.cm_ang = beamDirection.Angle(hit.lVector.Vect());
 
                 //vedhæft dette hit til vores liste af hits.

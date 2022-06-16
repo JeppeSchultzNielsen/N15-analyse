@@ -33,6 +33,8 @@ target_link_libraries(solidRunner PRIVATE AUSA::AUSA)
 add_executable(kenneth src/Coincidence/Kenneth.cpp)
 target_link_libraries(kenneth PRIVATE AUSA::AUSA)
 
+add_executable(rateFind src/rateFinder.cpp)
+target_link_libraries(rateFind PRIVATE AUSA::AUSA)
 
 add_executable(txt src/txtCreator.cpp)
 target_link_libraries(txt PRIVATE AUSA::AUSA)

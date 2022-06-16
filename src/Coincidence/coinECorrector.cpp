@@ -29,9 +29,9 @@ public:
     int NUM;
     TTree *t;
     unique_ptr<DynamicBranchVector<TVector3>> v_dir, v_pos;
-    unique_ptr<DynamicBranchVector<double>> v_E, v_BE, v_FE, v_theta, v_dE, v_solang, v_cmE, v_cmE2, v_angDiff, v_pCM, v_timeDiff, v_recoilE;
+    unique_ptr<DynamicBranchVector<double>> v_E, v_BE, v_FE, v_theta, v_dE, v_solang, v_cmE, v_cmE2, v_angDiff, v_pCM, v_timeDiff, v_recoilE, v_p3mul;
     unique_ptr<DynamicBranchVector<short>> v_i, v_orgmul;
-    unique_ptr<DynamicBranchVector<short>> v_F, v_B;
+    unique_ptr<DynamicBranchVector<short>> v_F, v_B, v_p3id,v_p3FI,v_p3BI;
     unique_ptr<DynamicBranchVector<double>> v_ang, v_SAng;
     unique_ptr<DynamicBranchVector<double>> v_FT, v_BT;
     unique_ptr<DynamicBranchVector<short>> v_alpha, v_cascade;
@@ -90,6 +90,7 @@ public:
         v_solang = make_unique<DynamicBranchVector<double>>(*t, "solidAngle", "mul");
 
         v_E = make_unique<DynamicBranchVector<double>>(*t, "E", "mul");
+        v_p3mul = make_unique<DynamicBranchVector<double>>(*t, "p3mul", "mul");
         v_BE = make_unique<DynamicBranchVector<double>>(*t, "BE", "mul");
         v_FE = make_unique<DynamicBranchVector<double>>(*t, "FE", "mul");
 
@@ -100,6 +101,9 @@ public:
 
         v_i = make_unique<DynamicBranchVector<short>>(*t, "id", "mul");
 
+        v_p3id = make_unique<DynamicBranchVector<short>>(*t, "p3id", "mul");
+        v_p3BI = make_unique<DynamicBranchVector<short>>(*t, "p3BI", "mul");
+        v_p3FI = make_unique<DynamicBranchVector<short>>(*t, "p3FI", "mul");
         v_F = make_unique<DynamicBranchVector<short>>(*t, "FI", "mul");
         v_orgmul = make_unique<DynamicBranchVector<short>>(*t, "orgmul", "mul");
         v_B = make_unique<DynamicBranchVector<short>>(*t, "BI", "mul");
@@ -334,6 +338,18 @@ public:
                     if(c12.index == 2 && c12.fseg == 1) continue;
                 }
 
+                //hvis eventet er et mul 3 event antager jeg, at den sidste er en proton. Dens index er
+                short p_index = 0;
+                if(hits.size() == 3){
+                    for(int k = 0; k < 3; k++){
+                        if(k == i || k == j) continue;
+                        p_index = k;
+                        break;
+                    }
+                }
+
+                auto p = hits.at(p_index);
+
                 //lav energikorrektion. Funktionen tager højde for om der er tale om en alpha eller c12.
                 alpha = correctEnergy(alpha);
                 c12 = correctEnergy(c12);
@@ -341,21 +357,24 @@ public:
                 //skab lorentzvektorer
                 alpha.lVector = {TMath::Sqrt((alpha.E + ALPHA_MASS)*(alpha.E + ALPHA_MASS) - ALPHA_MASS*ALPHA_MASS) * alpha.direction, alpha.E + ALPHA_MASS};
                 c12.lVector = {TMath::Sqrt((c12.E + c12_mass)*(c12.E + c12_mass) - c12_mass*c12_mass) * c12.direction, c12.E + c12_mass};
+                p.lVector = {TMath::Sqrt((p.E + PROTON_MASS)*(p.E + PROTON_MASS) - PROTON_MASS*PROTON_MASS) * p.direction, p.E + PROTON_MASS};
 
                 //boost dem til CM
                 alpha.lVector.Boost(-1*beta);
                 c12.lVector.Boost(-1*beta);
+                p.lVector.Boost(-1*beta);
 
                 //jeg kan nu finde deres CM energier:
                 alpha.cmEnergy = alpha.lVector[3] - ALPHA_MASS;
                 c12.cmEnergy = c12.lVector[3] - c12_mass;
+                p.cmEnergy = p.lVector[3] - PROTON_MASS;
 
                 //jeg kan finde deres fælles tidslige afstand, impuls i CM og vinkeladskillelse i CM
                 auto timeDiff = abs(alpha.TF - c12.TF);
                 auto cmP = (alpha.lVector + c12.lVector).Vect().Mag();
                 auto angDiff = alpha.lVector.Vect().Angle(c12.lVector.Vect())*TMath::RadToDeg();
 
-                if(angDiff < 160 || cmP > 50000) continue;
+                //if(angDiff < 160 || cmP > 50000) continue;
                 short canBeCascade = cascadeDeterminer(alpha.cmEnergy, c12.cmEnergy);
                 /*
                 if(canBeCascade == 1){
@@ -365,6 +384,26 @@ public:
                     }
                     cout << "-----------" << endl;
                 }*/
+                if(hits.size() == 3){
+                    v_p3mul -> add(p.cmEnergy);
+                    v_p3mul -> add(p.cmEnergy);
+                    v_p3id -> add(p.index);
+                    v_p3id -> add(p.index);
+                    v_p3BI -> add(p.bseg);
+                    v_p3BI -> add(p.bseg);
+                    v_p3FI -> add(p.fseg);
+                    v_p3FI -> add(p.fseg);
+                }
+                else{
+                    v_p3mul -> add(0);
+                    v_p3mul -> add(0);
+                    v_p3id -> add(0);
+                    v_p3id -> add(0);
+                    v_p3BI -> add(0);
+                    v_p3BI -> add(0);
+                    v_p3FI -> add(0);
+                    v_p3FI -> add(0);
+                }
 
                 v_orgmul->add(hits.size());
                 v_orgmul->add(hits.size());
@@ -470,7 +509,7 @@ public:
                 *v_F, *v_B, *v_SAng,
                 *v_ang, *v_pos, *v_dir,
                 *v_dE, *v_FT, *v_BT, *v_cmE, *v_cmE2, *v_angDiff, *v_pCM, *v_alpha, *v_timeDiff,
-                *v_recoilE, *v_cascade, *v_solang, *v_orgmul
+                *v_recoilE, *v_cascade, *v_solang, *v_orgmul, *v_p3mul, *v_p3BI, *v_p3FI,*v_p3id
         );
     }
 
